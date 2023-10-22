@@ -1,10 +1,14 @@
 <template>
-  <ul class="menu gap-8">
+  <ul class="menu gap-4 w-auto text-xs">
     <li>
-      <a class="tooltip tooltip-right align-baseline" data-tip="Home">
+      <router-link
+        :to="{ name: 'home' }"
+        class="tooltip tooltip-right align-baseline"
+        data-tip="Home"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="vertical-align pb-3"
+          class="vertical-align pb-2"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -17,13 +21,13 @@
           />
         </svg>
         <span>首页</span>
-      </a>
+      </router-link>
     </li>
     <li>
       <a class="tooltip tooltip-right align-baseline" data-tip="Details">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="vertical-align pb-3"
+          class="vertical-align pb-2"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -42,7 +46,7 @@
       <a class="tooltip tooltip-right" data-tip="Stats" @click="change">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="vertical-align pb-3"
+          class="vertical-align pb-2"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
