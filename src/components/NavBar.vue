@@ -1,130 +1,233 @@
 <template>
-  <div class="navbar w-full flex justify-between items-center p-4">
-    <!-- Left Part -->
-    <router-link :to="{ name: 'home' }" class="flex items-center">
-      <span class="tooltip tooltip-bottom before:text-xs before:content-[attr(data-tip)]">
-        <label aria-label="Open menu" for="drawer" class="btn btn-square btn-ghost drawer-button">
-          <svg
-            width="20"
-            height="20"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block h-5 w-5 stroke-current md:h-6 md:w-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>
-          </svg>
-        </label>
-      </span>
-      <div class="hidden sm:flex items-center gap-2">
-        <a class="btn btn-ghost normal-case text-xl">
-          <img
-            src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231012181123493.png"
-            alt=""
-          />
-          <span>Fusion</span>
-        </a>
-      </div>
-    </router-link>
+  <header>
+    <div class="max-w-screen-xl pl-10 pr-2 pt-4 sm:pl-20">
+      <div class="sm:flex sm:items-center sm:justify-between">
+        <!-- 左边区域 -->
+        <div class="text-center sm:text-left">
+          <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">Welcome to Fusion!</h1>
 
-    <!-- Center Part - Search -->
-    <div
-      class="flex items-center p-2 bg-white border rounded-md mx-auto"
-      style="width: 60%; max-width: 600px"
-    >
-      <!-- Search Icon -->
-      <svg
-        class="w-6 h-6 text-gray-500"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-      <!-- Search Input -->
-      <input
-        class="flex-grow ml-2 p-1 focus:outline-none"
-        type="text"
-        placeholder="Search"
-        aria-label="Search"
-      />
-      <!-- Clear Icon (Hidden by default) -->
-      <svg
-        class="w-6 h-6 text-gray-500 ml-2 cursor-pointer hidden"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </div>
+          <p class="mt-1.5 text-sm text-gray-500">
+            This is a university competition team platform 🎉
+          </p>
+        </div>
 
-    <!-- Right Part -->
-    <div class="flex-0" v-if="$store.state.user.is_login">
-      <div class="dropdown dropdown-end">
-        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full">
-            <img
-              src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231014112932422.png"
-            />
-          </div>
-        </label>
-        <ul
-          tabindex="0"
-          class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+        <!-- 右边区域 -->
+        <div
+          class="flex flex-1 items-center justify-between gap-4 sm:justify-end lg:absolute lg:right-10"
         >
-          <li>
-            <a class="justify-between">
-              Profile
-              <span class="badge">New</span>
-            </a>
-          </li>
-          <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
-        </ul>
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <label class="sr-only" for="search"> Search </label>
+
+              <input
+                class="h-10 w-full rounded-full border-none bg-white pe-10 ps-4 text-sm shadow-sm sm:w-56"
+                id="search"
+                type="search"
+                placeholder="Search website..."
+              />
+
+              <button
+                type="button"
+                class="absolute end-1 top-1/2 -translate-y-1/2 rounded-full bg-gray-50 p-2 text-gray-600 transition hover:text-gray-700"
+              >
+                <span class="sr-only">Search</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <!--通知图标-->
+            <!-- <a
+              href="#"
+              class="block shrink-0 rounded-full bg-white p-2.5 text-gray-600 shadow-sm hover:text-gray-700"
+            >
+              <span class="sr-only">Notifications</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+            </a> -->
+          </div>
+
+          <span aria-hidden="true" class="block h-6 w-px rounded-full bg-gray-200"></span>
+
+          <div v-if="$store.state.user.is_login">
+            <!-- 已登录状态，显示用户下拉菜单 -->
+            <div class="flex-none">
+              <ul class="menu menu-horizontal pl-0">
+                <li>
+                  <details class="group [&_summary::-webkit-details-marker]:hidden">
+                    <summary
+                      class="group flex items-center justify-between rounded-lg px-2 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                    >
+                      <img
+                        alt=""
+                        src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231014112932422.png"
+                        class="h-10 w-10 rounded-full object-cover"
+                      />
+                      <p class="ms-2 hidden text-left text-xs sm:block mr-2 mb-0">
+                        <strong class="block font-medium">Yra</strong>
+                        <span class="text-gray-500"> 信息机电与工程学院 </span>
+                      </p>
+                    </summary>
+                    <!-- ... 用户下拉菜单 ... -->
+                    <ul class="dropdown space-y-1 px-4 sm:w-52 right-0 sm:right-2">
+                      <li>
+                        <a
+                          href=""
+                          class="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-gray-700"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 opacity-75"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+
+                          <span class="text-sm font-medium"> General </span>
+                        </a>
+                      </li>
+
+                      <li>
+                        <details class="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary
+                            class="group flex items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                          >
+                            <div class="flex items-center gap-2">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 opacity-75"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                                />
+                              </svg>
+
+                              <span class="text-sm font-medium"> Teams </span>
+                            </div>
+                          </summary>
+                        </details>
+                      </li>
+
+                      <li>
+                        <details class="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary
+                            class="group flex items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                          >
+                            <div class="flex items-center gap-2">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 opacity-75"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                />
+                              </svg>
+
+                              <span class="text-sm font-medium"> Account </span>
+                            </div>
+                          </summary>
+
+                          <ul class="mt-2 space-y-1 px-4">
+                            <li>
+                              <a
+                                href=""
+                                class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                              >
+                                Details
+                              </a>
+                            </li>
+
+                            <li>
+                              <a
+                                href=""
+                                class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                              >
+                                Security
+                              </a>
+                            </li>
+
+                            <li>
+                              <form action="/logout">
+                                <button
+                                  type="submit"
+                                  class="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
+                                >
+                                  Logout
+                                </button>
+                              </form>
+                            </li>
+                          </ul>
+                        </details>
+                      </li>
+                    </ul>
+                  </details>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <router-link :to="{ name: 'login' }" style="height: 72px" v-else>
+            <!-- 未登录状态，显示登录按钮 -->
+            <button class="btn btn-md sm:btn-lg btn-link text-black pt-6 sm:pt-2">Login</button>
+          </router-link>
+        </div>
       </div>
     </div>
-
-    <router-link
-      :to="{ name: 'login' }"
-      class="btn btn-ghost bg-transparent hover:bg-blue-100 text-blue-600 font-semibold py-2 px-4 border border-gray-200 hover:border-transparent rounded-full flex-0 pl-3 mr-3 flex-none"
-      v-else
-    >
-      <svg
-        class="text-slate-900 dark:text-white w-auto h-6"
-        viewBox="0 0 15 15"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier">
-          <path
-            d="M4.5 11.5H4C4 11.7761 4.22386 12 4.5 12V11.5ZM10.5 11.5V12C10.7761 12 11 11.7761 11 11.5H10.5ZM4.5 12H10.5V11H4.5V12ZM11 11.5V9.5H10V11.5H11ZM4 9.5V11.5H5V9.5H4ZM7.5 6C5.567 6 4 7.567 4 9.5H5C5 8.11929 6.11929 7 7.5 7V6ZM11 9.5C11 7.567 9.433 6 7.5 6V7C8.88071 7 10 8.11929 10 9.5H11ZM14 11.5C14 11.7451 13.8862 12.0204 13.594 12.3165C13.2997 12.6147 12.8491 12.9061 12.2528 13.1617C11.0619 13.6721 9.3819 14 7.5 14V15C9.48409 15 11.3041 14.6563 12.6467 14.0808C13.3171 13.7935 13.8916 13.4385 14.3058 13.0189C14.722 12.5971 15 12.0833 15 11.5H14ZM7.5 14C5.6181 14 3.93808 13.6721 2.74721 13.1617C2.15089 12.9061 1.70026 12.6147 1.40597 12.3165C1.1138 12.0204 1 11.7451 1 11.5H0C0 12.0833 0.27795 12.5971 0.694221 13.0189C1.10837 13.4385 1.68286 13.7935 2.35329 14.0808C3.69593 14.6563 5.51591 15 7.5 15V14ZM1 11.5C1 11.258 1.1108 10.9868 1.39448 10.6952C1.68043 10.4012 2.11881 10.1128 2.70035 9.85849L2.29965 8.94229C1.644 9.22903 1.08238 9.58178 0.677627 9.99794C0.270611 10.4164 0 10.9245 0 11.5H1ZM12.2996 9.85849C12.8812 10.1128 13.3196 10.4012 13.6055 10.6952C13.8892 10.9868 14 11.258 14 11.5H15C15 10.9245 14.7294 10.4164 14.3224 9.99794C13.9176 9.58178 13.356 9.22903 12.7004 8.94229L12.2996 9.85849ZM7.5 4C6.67157 4 6 3.32843 6 2.5H5C5 3.88071 6.11929 5 7.5 5V4ZM9 2.5C9 3.32843 8.32843 4 7.5 4V5C8.88071 5 10 3.88071 10 2.5H9ZM7.5 1C8.32843 1 9 1.67157 9 2.5H10C10 1.11929 8.88071 0 7.5 0V1ZM7.5 0C6.11929 0 5 1.11929 5 2.5H6C6 1.67157 6.67157 1 7.5 1V0Z"
-            fill="#000000"
-          ></path>
-        </g>
-      </svg>
-      <span class="text-base">登录</span>
-    </router-link>
-  </div>
+  </header>
 </template>
 
-
 <script>
+export default {
+  setup() {}
+}
 </script>
+
+<style scoped>
+</style>
