@@ -27,10 +27,11 @@
         </div>
         <h1 class="text-xl md:text-2xl font-bold leading-tight mt-2">登录</h1>
 
-        <form class="mt-6" @submit.prevent>
+        <form class="mt-6" @submit.prevent="login">
           <div>
             <label class="block text-gray-700">用户名</label>
             <input
+              v-model="username"
               type="username"
               class="w-full px-4 py-3 rounded-lg mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
               autofocus
@@ -41,6 +42,7 @@
           <div class="mt-4">
             <label class="block text-gray-700">密码</label>
             <input
+              v-model="password"
               type="password"
               minlength="6"
               class="w-full px-4 py-3 rounded-lg mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
@@ -55,10 +57,11 @@
               >【TODO】忘记密码?</a
             >
           </div>
-
+          <div class="error-message">{{ error_message }}</div>
           <button
             type="submit"
             class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6"
+            @click="login"
           >
             登录
           </button>
@@ -92,14 +95,45 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+import router from '@/router/index'
+
 export default {
-  name: 'LoginLanding',
-  methods: {
-    // Any methods related to this component can be added here
+  name: 'LoginView',
+  components: {},
+  setup() {
+    const store = useStore()
+    let username = ref('')
+    let password = ref('')
+    let error_message = ref('')
+
+    const login = () => {
+      error_message.value = ''
+      store.dispatch('login', {
+        username: username.value,
+        password: password.value,
+        success() {
+          router.push({ name: 'home' })
+        },
+        error() {
+          error_message.value = '用户名或密码错误'
+        }
+      })
+    }
+
+    return {
+      username,
+      password,
+      error_message,
+      login
+    }
   }
 }
 </script>
 
 <style scoped>
-/* Add any additional styles here */
+.error-message {
+  color: red;
+}
 </style>
