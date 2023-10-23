@@ -1,74 +1,82 @@
 import $ from 'jquery'
 import jwt_decode from 'jwt-decode'
+import { server_url, user_login_url, user_info_url } from '@/constants/constants.js'
+
+const stored_token = localStorage.getItem('token') || ''
+const stored_user_info = JSON.parse(localStorage.getItem('user_info')) || {}
 
 const ModuleUser = {
   state: {
-    id: '',
-    username: '',
-    photo: '',
-    access: '',
-    is_login: false
+    token: stored_token,
+    is_login: !!stored_token,
+    user_info: stored_user_info
   },
   getters: {},
   mutations: {
-    updateUser(state, user) {
-      ;(state.id = user.id),
-        (state.username = user.username),
-        (state.photo = user.photo),
-        (state.access = user.access),
-        (state.is_login = user.is_login)
+    update_user(state, user) {
+      state.token = user.token
+      state.is_login = true
+      state.user_info = user
     },
 
     // 更新本地 token
-    updateAccess(state, access) {
-      state.access = access
-    },
+    // updateToken(state, token) {
+    //   state.token = token
+    // },
     logout(state) {
-      state.id = ''
-      state.username = ''
-      state.photo = ''
-      state.access = ''
+      localStorage.removeItem('token')
+      localStorage.removeItem('user_info')
+      state.token = ''
       state.is_login = false
+      state.user_info = {}
     }
   },
   actions: {
     login(context, data) {
       // 登录请求
       $.ajax({
-        url: '',
+        url: `${server_url}${user_login_url}`,
         type: 'POST',
         data: {
           username: data.username,
           password: data.password
         },
-        success(resp) {
-          const { access } = resp
-          const access_obj = jwt_decode(access)
 
+        success(resp) {
+          const { token } = resp
+          const token_obj = jwt_decode(token)
+          localStorage.setItem('token', token)
           // 登录成功后获取用户信息
-          $.ajax({
-            url: 'https://app165.acapp.acwing.com.cn/myspace/getinfo/',
-            type: 'GET',
-            data: {
-              user_id: access_obj.user_id,
-              token: /*...*/ 123
-            },
-            headers: {
-              Authorization: `Bearer ${access}`
-            },
-            success(resp) {
-              context.commit('updateUser', {
-                ...resp,
-                access: access,
-                is_login: true
-              })
-              data.success()
-            }
+          context.dispatch('get_user_info', {
+            user_id: token_obj.user_id,
+            token: token,
+            success: data.success
           })
         },
-
         error() {
           data.error()
+        }
+      })
+    },
+    get_user_info(context, data) {
+      $.ajax({
+        url: `${server_url}${user_info_url}`,
+        type: 'GET',
+        data: {
+          user_id: data.user_id,
+          token: data.token
+        },
+        headers: {
+          Authorization: `Bearer ${data.token}`
+        },
+        success(resp) {
+          localStorage.setItem('user_info', JSON.stringify(resp.user_info))
+          context.commit('update_user', {
+            ...resp.user_info,
+            token: data.token,
+            is_login: true
+          })
+          data.success()
         }
       })
     }
