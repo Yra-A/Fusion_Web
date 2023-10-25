@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col">
     <!-- NavBar -->
-    <NavBar class="" />
+    <NavBar />
 
     <!-- Content -->
     <div class="flex mx-auto mt-8 justify-center">
