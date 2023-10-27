@@ -6,7 +6,10 @@
     <!-- Content -->
     <div class="flex mx-auto mt-8 justify-center">
       <!-- Left Side - Filters -->
-      <div class="flex flex-col content-cen w-80 bg-white p-4 rounded shadow shadow-xl">
+      <div
+        class="sm:max-h-[85vh] sm:overflow-auto min-w-[500px] flex flex-col content-cen w-80 bg-white p-4 rounded shadow shadow-xl"
+        style="min-width: 300px"
+      >
         <div class="block mt-3 mb-3 pb-3 h-10 border-b border-b-slate-200">
           <h3 class="text-lg font-semibold mb-4 float-left">筛选</h3>
           <span
@@ -84,9 +87,13 @@
       <div class="mx-4 w-px bg-gray-400 h-full"></div>
 
       <!-- Right Side - Event Blocks -->
-      <div class="flex flex-col w-2/4 bg-white p-4 rounded shadow-lg">
-        <div class="block h-">
+      <div
+        class="sm:max-h-[85vh] min-w-[500px] flex flex-col w-1/2 bg-white p-4 rounded shadow-lg"
+        style="min-width: 700px"
+      >
+        <div class="block">
           <h3 class="float-left text-3xl ml-4 font-semibold mb-4">赛事板块 🚀</h3>
+          <!-- Pagination -->
           <div class="float-right inline-flex items-center justify-center gap-4">
             <!-- Previous Page Button -->
             <button
@@ -137,16 +144,23 @@
             </button>
           </div>
         </div>
-        <ContestCard
-          v-for="contest in contests"
-          :key="contest.id"
-          :title="contest.title"
-          :field="contest.field"
-          :format="contest.format"
-          :created_time="contest.created_time"
-          :description="contest.description"
-          class="block"
-        ></ContestCard>
+        <div class="sm:overflow-auto">
+          <router-link
+            :to="{ name: 'contest', params: { contest_id: contest.contest_id } }"
+            v-for="contest in contests"
+            :key="'link-' + contest.contest_id"
+            target="_blank"
+            class="block transition-transform transform active:scale-95"
+          >
+            <ContestCard
+              :title="contest.title"
+              :field="contest.field"
+              :format="contest.format"
+              :created_time="contest.created_time"
+              :description="contest.description"
+            ></ContestCard>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -156,7 +170,7 @@
 import NavBar from '../components/NavBar.vue'
 import ContestCard from '../components/ContestCard.vue'
 import { ref, computed, watch } from 'vue'
-import { contest_list_url, server_url } from '../constants/constants.js'
+import { contest_list_url, server_url, web_contest_url } from '../constants/constants.js'
 import $ from 'jquery'
 
 export default {
@@ -232,6 +246,7 @@ export default {
     ])
     const contests = ref([
       {
+        contest_id: 0,
         title: '',
         field: '',
         format: '',
@@ -241,7 +256,7 @@ export default {
     ])
     const currentPage = ref(1)
     const totalPage = ref(0)
-    const limit = 7 // 每页显示的数量
+    const limit = 10 // 每页显示的数量
 
     // 计算属性，用于判断是否有至少一个复选框被选中
     const anyCheckboxSelected = computed(() => {
@@ -262,7 +277,6 @@ export default {
       let selected_formats = competition_formats.value
         .filter((format) => format.selected)
         .map((format) => format.id)
-      console.log((currentPage.value - 1) * limit, limit, '1@#')
       $.ajax({
         url: `${server_url}${contest_list_url}`,
         type: 'GET',
@@ -274,17 +288,22 @@ export default {
           offset: (currentPage.value - 1) * limit
         },
         success: function (resp) {
-          totalPage.value = Math.ceil(resp.total / limit)
-          const fetched_contests = resp.contest_list.map((item) => {
-            return {
-              title: item.contest.title,
-              field: item.contest.field,
-              format: item.contest.format,
-              created_time: item.contest.created_time,
-              description: item.contest.description
-            }
-          })
-          contests.value = fetched_contests
+          if (resp.status_code === 0) {
+            totalPage.value = Math.ceil(resp.total / limit)
+            const fetched_contests = resp.contest_list.map((item) => {
+              return {
+                contest_id: item.contest_brief_info.contest_id,
+                title: item.contest_brief_info.title,
+                field: item.contest_brief_info.field,
+                format: item.contest_brief_info.format,
+                created_time: item.contest_brief_info.created_time,
+                description: item.contest_brief_info.description
+              }
+            })
+            contests.value = fetched_contests
+          } else {
+            console.error('Error fetching contests:', resp)
+          }
         },
         error: function (error) {
           console.error('Error fetching contests:', error)
@@ -321,7 +340,8 @@ export default {
       currentPage,
       totalPage,
       nextPage,
-      prevPage
+      prevPage,
+      web_contest_url
     }
   }
 }
