@@ -1,9 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 const HomeView = () => import('../views/HomeView.vue')
 const LoginView = () => import('../views/LoginView.vue')
 const RegisterView = () => import('../views/RegisterView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 const ContestView = () => import('../views/ContestView.vue')
+const UserInfoUploadView = () => import('../views/UserInfoUploadView.vue')
+const UserProfileView = () => import('../views/UserProfileView.vue')
+const UserProfileUploadView = () => import('../views/UserProfileUploadView.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +26,21 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/user/info/upload',
+      name: 'userinfoupload',
+      component: UserInfoUploadView
+    },
+    {
+      path: '/user/profile',
+      name: 'userprofile',
+      component: UserProfileView
+    },
+    {
+      path: '/user/profile/upload',
+      name: 'userprofileupload',
+      component: UserProfileUploadView
     },
     {
       path: '/contest/:contest_id/',

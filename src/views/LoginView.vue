@@ -35,7 +35,6 @@
               type="username"
               class="w-full px-4 py-3 rounded-lg mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
               autofocus
-              required
             />
           </div>
 
@@ -44,9 +43,7 @@
             <input
               v-model="password"
               type="password"
-              minlength="6"
               class="w-full px-4 py-3 rounded-lg mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
-              required
             />
           </div>
 
@@ -108,8 +105,23 @@ export default {
     let password = ref('')
     let error_message = ref('')
 
+    const checkInput = () => {
+      const username_len = username.value.length
+      const password_len = password.value.length
+      if (username_len >= 6 && username_len <= 32 && password_len >= 8 && password_len <= 16) {
+        return true
+      }
+      return false
+    }
+
     const login = () => {
       error_message.value = ''
+      if (!checkInput()) {
+        // 换行 输出用户名为 6-32 位，密码为 8-16 位
+        error_message.value = '用户名或密码格式错误\n用户名为 6 - 32 位，密码为 8 - 16 位'
+        password.value = ''
+        return
+      }
       store.dispatch('login', {
         username: username.value,
         password: password.value,
@@ -135,5 +147,6 @@ export default {
 <style scoped>
 .error-message {
   color: red;
+  white-space: pre-line;
 }
 </style>
