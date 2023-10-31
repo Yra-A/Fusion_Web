@@ -50,6 +50,7 @@
 import { ref } from 'vue'
 import $ from 'jquery'
 import NavBar from '../components/NavBar.vue'
+import { server_url, user_profile_url } from '../constants/constants'
 import { imageProps } from 'ant-design-vue/es/vc-image'
 export default {
   name: 'UserProfileView',
@@ -57,20 +58,20 @@ export default {
     NavBar
   },
   setup() {
-    const realname = ref('1')
-    const enrolment_year = ref('1')
-    const college = ref('1')
-    const mobile_phone = ref('1')
-    const gender = ref('1')
-    const qq_number = ref('1')
-    const wechat_number = ref('1')
-    const introduction = ref('1')
-    const honors = ref('1')
-    const images = ref('1')
+    const realname = ref('')
+    const enrolment_year = ref('')
+    const college = ref('')
+    const mobile_phone = ref('')
+    const gender = ref('')
+    const qq_number = ref('')
+    const wechat_number = ref('')
+    const introduction = ref('')
+    const honors = ref('')
+    const images = ref('')
 
     const fetchData = async () => {
       $.ajax({
-        url: 'http://127.0.0.1:4523/m1/3429271-0-default/user/profile/1', // 替换为你的 API 端点
+        url: `${server_url}${user_profile_url}`, // 替换为你的 API 端点
         type: 'GET',
         success: function (resp) {
           realname.value = resp.user_profile.user_info.realname
@@ -103,7 +104,9 @@ export default {
       introduction,
       honors,
       images,
-      fetchData
+      fetchData,
+      server_url,
+      user_profile_url
     }
   }
 }

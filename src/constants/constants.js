@@ -14,6 +14,9 @@ const article_list_url = '/article/list'
 
 const team_list_url = '/team/list'
 
+const user_profile_url = '/user/profile/{user_id}'
+const user_profile_upload_url = '/user/profile/upload'
+
 /* 前端 */
 const web_url = 'http://localhost:5173'
 const web_contest_url = web_url + '/contest'
@@ -30,5 +33,7 @@ export {
   web_contest_url,
   article_list_url,
   team_list_url,
-  user_info_upload_url
+  user_info_upload_url,
+  user_profile_url,
+  user_profile_upload_url
 }

@@ -127,6 +127,7 @@ import { ref } from 'vue'
 import $ from 'jquery'
 import { PhotoIcon } from '@heroicons/vue/24/solid'
 import NavBar from '../components/NavBar.vue'
+import { server_url, user_profile_upload_url } from '../constants/constants'
 export default {
   name: 'UserProfileUploadView',
   components: {
@@ -143,7 +144,7 @@ export default {
       imageFile: null
     })
     const submitForm = async () => {
-      const url = 'http://127.0.0.1:4523/m1/3429271-0-default/user/profile/upload'
+      const url = `${server_url}${user_profile_upload_url}`
 
       $.ajax({
         url: url,
@@ -161,7 +162,9 @@ export default {
     }
     return {
       formData,
-      submitForm
+      submitForm,
+      server_url,
+      user_profile_upload_url
     }
   }
 }
