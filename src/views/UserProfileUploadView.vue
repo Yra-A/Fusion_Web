@@ -1,8 +1,8 @@
 
 <template>
   <NavBar />
-  <form>
-    <div class="space-y-12 pl-20">
+  <form @submit.prevent="submitForm">
+    <div class="space-y-12 px-80">
       <div class="border-b border-gray-900/10 pb-12">
         <h2 class="text-base font-semibold leading-7 text-gray-900">用户档案</h2>
         <p class="mt-1 text-sm leading-6 text-gray-600">
@@ -122,18 +122,53 @@
   </form>
 </template>
     
-    <script >
-import { PhotoIcon, UserCircleIcon } from '@heroicons/vue/24/solid'
+<script >
+import { ref } from 'vue'
+import $ from 'jquery'
+import { PhotoIcon } from '@heroicons/vue/24/solid'
 import NavBar from '../components/NavBar.vue'
+import { server_url, user_profile_upload_url } from '../constants/constants'
 export default {
   name: 'UserProfileUploadView',
   components: {
     NavBar,
-    PhotoIcon,
-    UserCircleIcon
+    PhotoIcon
+  },
+  setup() {
+    const formData = ref({
+      mobilePhone: '',
+      qqNumber: '',
+      wechatNumber: '',
+      introduction: '',
+      honors: '',
+      imageFile: null
+    })
+    const submitForm = async () => {
+      const url = `${server_url}${user_profile_upload_url}`
+
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData.value,
+        success: function (response) {
+          // 处理成功的响应
+          console.log(response)
+        },
+        error: function (xhr, status, error) {
+          // 处理错误
+          console.error(error)
+        }
+      })
+    }
+    return {
+      formData,
+      submitForm,
+      server_url,
+      user_profile_upload_url
+    }
   }
 }
 </script>
   
-  <style scoped>
+<style scoped>
 </style>

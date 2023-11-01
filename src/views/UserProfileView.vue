@@ -1,48 +1,58 @@
-
 <template>
   <NavBar />
   <section>
-    <div class="min-h-screen bg-blue-50 w-full flex justify-center items-center">
-      <div class="mx-auto pt-10 px-5 md:px-20 rounded-lg bg-white w-full md:w-2/3 h-4/5 shadow-2xl">
+    <div class="min-h-screen w-full bg-gradient-to-b from-blue-400 to-transparent">
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
+        <div class="h-32 rounded-lg lg:col-span-2">
+          <div class="pt-10 pl-60 text-3xl font-blod text-white">我的简历</div>
+        </div>
+        <div class="h-32 rounded-lg pt-10">
+          <a
+            class="inline-block rounded border border-current px-10 py-3 text-xl font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-indigo-500"
+            :href="web_user_profile_upload_url"
+          >
+            编辑
+          </a>
+        </div>
+      </div>
+      <div class="mx-auto pt-10 px-5 md:px-20 rounded-lg bg-white w-full md:w-2/3 h-4/5 shadow-xl">
         <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block">基础信息</h1>
         <!-- Resume content -->
         <div class="grid grid-cols-2 gap-2 pt-5">
           <div>
             <p class="infotemplate pt-5">真实姓名</p>
-            <p class="">郭契丹</p>
+            <p class="">{{ realname }}</p>
             <p class="infotemplate pt-5">入学年份</p>
-            <p class="">2021</p>
+            <p class="">{{ enrolment_year }}</p>
             <p class="infotemplate pt-5">所属学院</p>
-            <p class="">信机</p>
+            <p class="">{{ college }}</p>
             <p class="infotemplate pt-5">手机号码</p>
-            <p class="">15900441590</p>
+            <p class="">{{ mobile_phone }}</p>
           </div>
 
           <div class="">
             <p class="infotemplate pt-5">性别</p>
-            <p class="">男</p>
+            <p class="">{{ gender }}</p>
             <p class="infotemplate pt-5">QQ号码</p>
-            <p class="">240588498</p>
+            <p class="">{{ qq_number }}</p>
             <p class="infotemplate pt-5">微信号码</p>
-            <p class="">15900441590</p>
+            <p class="">{{ wechat_number }}</p>
           </div>
         </div>
         <div>
           <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
             个人介绍
           </h1>
-          <p class="pt-10">我是xx，拥有xx技能，希望参加xx类型比赛</p>
+          <p class="pt-10">{{ introduction }}</p>
         </div>
         <div>
           <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
             荣誉列表
           </h1>
-          <p class="pt-10">获得xx一等奖，xx二等奖</p>
+          <p class="pt-10">{{ honors }}</p>
         </div>
         <div>
-          <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
-            图片列表
-          </h1>
+          <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">img</h1>
           <div class="pt-10">img</div>
         </div>
       </div>
@@ -50,11 +60,68 @@
   </section>
 </template>
 <script>
+import { ref } from 'vue'
+import $ from 'jquery'
 import NavBar from '../components/NavBar.vue'
+import { server_url, user_profile_url, web_user_profile_upload_url } from '../constants/constants'
+import { imageProps } from 'ant-design-vue/es/vc-image'
 export default {
   name: 'UserProfileView',
   components: {
     NavBar
+  },
+  setup() {
+    const realname = ref('')
+    const enrolment_year = ref('')
+    const college = ref('')
+    const mobile_phone = ref('')
+    const gender = ref('')
+    const qq_number = ref('')
+    const wechat_number = ref('')
+    const introduction = ref('')
+    const honors = ref('')
+    const images = ref('')
+
+    const fetchData = async () => {
+      $.ajax({
+        url: `${server_url}${user_profile_url}`, // 替换为你的 API 端点
+        type: 'GET',
+        success: function (resp) {
+          realname.value = resp.user_profile_info.user_info.realname
+          enrolment_year.value = resp.user_profile_info.user_info.enrollment_year
+          college.value = resp.user_profile_info.user_info.college
+          mobile_phone.value = resp.user_profile_info.user_info.mobile_phone
+          gender.value = resp.user_profile_info.user_info.gender
+          qq_number.value = resp.user_profile_info.qq_number
+          wechat_number.value = resp.user_profile_info.wechat_number
+          introduction.value = resp.user_profile_info.introduction
+          honors.value = resp.user_profile_info.honors
+          images.value = resp.user_profile_info.images
+        },
+        error: function (xhr, status, error) {
+          console.error(error)
+        }
+      })
+    }
+    fetchData()
+
+    console.log(realname.value)
+    return {
+      realname,
+      enrolment_year,
+      college,
+      mobile_phone,
+      gender,
+      qq_number,
+      wechat_number,
+      introduction,
+      honors,
+      images,
+      fetchData,
+      server_url,
+      user_profile_url,
+      web_user_profile_upload_url
+    }
   }
 }
 </script>
