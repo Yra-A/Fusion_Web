@@ -20,6 +20,8 @@ const user_profile_upload_url = '/user/profile/upload'
 /* 前端 */
 const web_url = 'http://localhost:5173'
 const web_contest_url = web_url + '/contest'
+const web_user_profile_url = web_url + '/user/profile'
+const web_user_profile_upload_url = web_url + '/user/profile/upload'
 
 export {
   server_url,
@@ -35,5 +37,7 @@ export {
   team_list_url,
   user_info_upload_url,
   user_profile_url,
-  user_profile_upload_url
+  user_profile_upload_url,
+  web_user_profile_url,
+  web_user_profile_upload_url
 }

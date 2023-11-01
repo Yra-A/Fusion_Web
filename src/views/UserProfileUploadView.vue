@@ -2,7 +2,7 @@
 <template>
   <NavBar />
   <form @submit.prevent="submitForm">
-    <div class="space-y-12 pl-20">
+    <div class="space-y-12 px-80">
       <div class="border-b border-gray-900/10 pb-12">
         <h2 class="text-base font-semibold leading-7 text-gray-900">用户档案</h2>
         <p class="mt-1 text-sm leading-6 text-gray-600">

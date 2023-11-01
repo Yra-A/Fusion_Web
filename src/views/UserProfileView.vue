@@ -1,8 +1,21 @@
 <template>
   <NavBar />
   <section>
-    <div class="min-h-screen bg-blue-50 w-full flex justify-center items-center">
-      <div class="mx-auto pt-10 px-5 md:px-20 rounded-lg bg-white w-full md:w-2/3 h-4/5 shadow-2xl">
+    <div class="min-h-screen w-full bg-gradient-to-b from-blue-400 to-transparent">
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
+        <div class="h-32 rounded-lg lg:col-span-2">
+          <div class="pt-10 pl-60 text-3xl font-blod text-white">我的简历</div>
+        </div>
+        <div class="h-32 rounded-lg pt-10">
+          <a
+            class="inline-block rounded border border-current px-10 py-3 text-xl font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-indigo-500"
+            :href="web_user_profile_upload_url"
+          >
+            编辑
+          </a>
+        </div>
+      </div>
+      <div class="mx-auto pt-10 px-5 md:px-20 rounded-lg bg-white w-full md:w-2/3 h-4/5 shadow-xl">
         <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block">基础信息</h1>
         <!-- Resume content -->
         <div class="grid grid-cols-2 gap-2 pt-5">
@@ -50,7 +63,7 @@
 import { ref } from 'vue'
 import $ from 'jquery'
 import NavBar from '../components/NavBar.vue'
-import { server_url, user_profile_url } from '../constants/constants'
+import { server_url, user_profile_url, web_user_profile_upload_url } from '../constants/constants'
 import { imageProps } from 'ant-design-vue/es/vc-image'
 export default {
   name: 'UserProfileView',
@@ -74,16 +87,16 @@ export default {
         url: `${server_url}${user_profile_url}`, // 替换为你的 API 端点
         type: 'GET',
         success: function (resp) {
-          realname.value = resp.user_profile.user_info.realname
-          enrolment_year.value = resp.user_profile.user_info.enrollment_year
-          college.value = resp.user_profile.user_info.college
-          mobile_phone.value = resp.user_profile.user_info.mobile_phone
-          gender.value = resp.user_profile.user_info.gender
-          qq_number.value = resp.user_profile.qq_number
-          wechat_number.value = resp.user_profile.wechat_number
-          introduction.value = resp.user_profile.introduction
-          honors.value = resp.user_profile.honors
-          images.value = resp.user_profile.images
+          realname.value = resp.user_profile_info.user_info.realname
+          enrolment_year.value = resp.user_profile_info.user_info.enrollment_year
+          college.value = resp.user_profile_info.user_info.college
+          mobile_phone.value = resp.user_profile_info.user_info.mobile_phone
+          gender.value = resp.user_profile_info.user_info.gender
+          qq_number.value = resp.user_profile_info.qq_number
+          wechat_number.value = resp.user_profile_info.wechat_number
+          introduction.value = resp.user_profile_info.introduction
+          honors.value = resp.user_profile_info.honors
+          images.value = resp.user_profile_info.images
         },
         error: function (xhr, status, error) {
           console.error(error)
@@ -106,7 +119,8 @@ export default {
       images,
       fetchData,
       server_url,
-      user_profile_url
+      user_profile_url,
+      web_user_profile_upload_url
     }
   }
 }
