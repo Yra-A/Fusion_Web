@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .rich-text h1,
+  .rich-text h2,
+  .rich-text h3,
+  .rich-text h4,
+  .rich-text h5,
+  .rich-text h6,
+  .rich-text p,
+  .rich-text ul,
+  .rich-text ol,
+  .rich-text li,
+  .rich-text a,
+  .rich-text strong,
+  .rich-text em,
+  .rich-text sup,
+  .rich-text s,
+  .rich-text blockquote {
+    all: revert;
+  }
+}

@@ -28,10 +28,26 @@
                         class="h-10 w-10 rounded-full object-cover"
                       />
                       <p class="ms-2 text-left text-xs block mr-2 mb-0">
-                        <strong class="block font-medium">{{
-                          $store.state.user.user_info.nickname
-                        }}</strong>
-                        <span class="text-gray-500">
+                        <span class="block font-medium text-base">
+                          <span class="align-middle">{{
+                            $store.state.user.user_info.nickname
+                          }}</span>
+
+                          <!-- 当 gender 为 1 时，仅显示male图标 -->
+                          <img
+                            v-if="$store.state.user.user_info.gender == 1"
+                            src="../assets/img/male.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+
+                          <!-- 当 gender 不为 1 时，显示female图标 -->
+                          <img
+                            v-else
+                            src="../assets/img/female.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                        </span>
+                        <span class="text-gray-600 text-xs">
                           {{ $store.state.user.user_info.college }}
                         </span>
                       </p>
