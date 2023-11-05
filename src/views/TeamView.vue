@@ -27,15 +27,28 @@
           >
             申请加入
           </button>
-          <button
-            v-else-if="role == 2"
-            class="flex justify-end text-lg font-semibold text-blue-700 hover:text-blue-500 transition-transform transform active:scale-90"
-            onclick="dialog_manage.showModal()"
-          >
-            管理队伍信息
-          </button>
+
+          <!-- 队长的按钮 -->
+          <div v-else-if="role == 2" class="flex gap-4">
+            <!-- 已收到的申请 -->
+            <button
+              class="flex justify-end text-lg font-semibold text-blue-700 hover:text-blue-500 transition-transform transform active:scale-90"
+              onclick="dialog_manage_apply.showModal()"
+            >
+              已收到的申请
+            </button>
+            <!-- 修改队伍信息 -->
+            <button
+              class="flex justify-end text-lg font-semibold text-blue-700 hover:text-blue-500 transition-transform transform active:scale-90"
+              @click="what_page = 1"
+            >
+              修改队伍信息
+            </button>
+          </div>
+
+          <!-- dialog 申请入队-->
           <dialog id="dialog_apply" class="modal modal-scroll" :close-on-press-escape="false">
-            <div class="modal-box">
+            <div class="modal-box min-h-[658px]">
               <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-lg">
                   ✕
@@ -54,6 +67,454 @@
                   <button type="submit" class="btn text-lg">提交</button>
                 </div>
               </form>
+            </div>
+          </dialog>
+
+          <!-- dialog 查看已收到的申请 -->
+          <dialog
+            id="dialog_manage_apply"
+            class="modal modal-scroll"
+            :close-on-press-escape="false"
+          >
+            <div class="modal-box min-h-[658px]">
+              <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-lg">
+                  ✕
+                </button>
+              </form>
+              <h3 class="font-bold text-lg flex items-center gap-2 mb-5">
+                <img
+                  src="../assets/img/collaborate.svg"
+                  alt="apply"
+                  class="w-6 h-6"
+                />队伍已收到的申请
+              </h3>
+              <div class="hs-accordion-group" data-hs-accordion-always-open>
+                <div class="hs-accordion shadow rounded-lg">
+                  <button
+                    class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
+                  >
+                    <div class="pb-3 mb-1 flex">
+                      <a href="https://www.baidu.com" target="_blank">
+                        <img
+                          src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102202448804.png"
+                          class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                          @click.stop
+                        />
+                      </a>
+                      <div class="ml-5 flex flex-col">
+                        <div>
+                          <span class="font-semibold text-base align-middle"> Yra </span>
+                          <img
+                            v-if="$store.state.user.user_info.gender == 1"
+                            src="../assets/img/male.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                          <!-- 当 gender 不为 1 时，显示female图标 -->
+                          <img
+                            v-else
+                            src="../assets/img/female.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                        </div>
+                        <span class="text-xs block"> 2021 级 • 信息机电与工程学院</span>
+                      </div>
+                    </div>
+                    <svg
+                      class="hs-accordion-active:hidden hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 block w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <svg
+                      class="hs-accordion-active:block hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 hidden w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 11L8.16086 5.31305C8.35239 5.13625 8.64761 5.13625 8.83914 5.31305L15 11"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300 px-4 pb-4"
+                  >
+                    <p class="text-gray-800 dark:text-gray-200">
+                      <em>This is the third item's accordion body.</em> It is hidden by default,
+                      until the collapse plugin adds the appropriate classes that we use to style
+                      each element. These classes control the overall appearance, as well as the
+                      showing and hiding via CSS transitions.
+                    </p>
+                    <div class="flex justify-end gap-2 mt-2 mr-2">
+                      <button
+                        class="bg-red-500 text-white px-2 rounded hover:bg-red-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">拒绝</span>
+                      </button>
+                      <button
+                        class="bg-green-500 text-white px-2 rounded hover:bg-green-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">接受</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hs-accordion shadow rounded-lg">
+                  <button
+                    class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
+                  >
+                    <div class="pb-3 mb-1 flex">
+                      <a href="https://www.baidu.com" target="_blank">
+                        <img
+                          src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195605253.png"
+                          class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                          @click.stop
+                        />
+                      </a>
+                      <div class="ml-5 flex flex-col">
+                        <div>
+                          <span class="font-semibold text-base align-middle"> 夜夜想起汤的话 </span>
+                          <img
+                            v-if="$store.state.user.user_info.gender == 2"
+                            src="../assets/img/male.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                          <!-- 当 gender 不为 1 时，显示female图标 -->
+                          <img
+                            v-else
+                            src="../assets/img/female.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                        </div>
+                        <span class="text-xs block"> 2021 级 • 美术学院</span>
+                      </div>
+                    </div>
+                    <svg
+                      class="hs-accordion-active:hidden hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 block w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <svg
+                      class="hs-accordion-active:block hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 hidden w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 11L8.16086 5.31305C8.35239 5.13625 8.64761 5.13625 8.83914 5.31305L15 11"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300 px-4 pb-4"
+                  >
+                    <p class="text-gray-800 dark:text-gray-200">
+                      <em>This is the third item's accordion body.</em> It is hidden by default,
+                      until the collapse plugin adds the appropriate classes that we use to style
+                      each element. These classes control the overall appearance, as well as the
+                      showing and hiding via CSS transitions.
+                    </p>
+                    <div class="flex justify-end gap-2 mt-2 mr-2">
+                      <button
+                        class="bg-red-500 text-white px-2 rounded hover:bg-red-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">拒绝</span>
+                      </button>
+                      <button
+                        class="bg-green-500 text-white px-2 rounded hover:bg-green-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">接受</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hs-accordion shadow rounded-lg">
+                  <button
+                    class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
+                  >
+                    <div class="pb-3 mb-1 flex">
+                      <a href="https://www.baidu.com" target="_blank">
+                        <img
+                          src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195635637.png"
+                          class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                          @click.stop
+                        />
+                      </a>
+                      <div class="ml-5 flex flex-col">
+                        <div>
+                          <span class="font-semibold text-base align-middle"> burstlink </span>
+                          <img
+                            v-if="$store.state.user.user_info.gender == 1"
+                            src="../assets/img/male.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                          <!-- 当 gender 不为 1 时，显示female图标 -->
+                          <img
+                            v-else
+                            src="../assets/img/female.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                        </div>
+                        <span class="text-xs block"> 2021 级 • 马克思主义学院</span>
+                      </div>
+                    </div>
+                    <svg
+                      class="hs-accordion-active:hidden hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 block w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <svg
+                      class="hs-accordion-active:block hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 hidden w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 11L8.16086 5.31305C8.35239 5.13625 8.64761 5.13625 8.83914 5.31305L15 11"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300 px-4 pb-4"
+                  >
+                    <p class="text-gray-800 dark:text-gray-200">
+                      <em>This is the third item's accordion body.</em> It is hidden by default,
+                      until the collapse plugin adds the appropriate classes that we use to style
+                      each element. These classes control the overall appearance, as well as the
+                      showing and hiding via CSS transitions.
+                    </p>
+                    <div class="flex justify-end gap-2 mt-2 mr-2">
+                      <button
+                        class="bg-red-500 text-white px-2 rounded hover:bg-red-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">拒绝</span>
+                      </button>
+                      <button
+                        class="bg-green-500 text-white px-2 rounded hover:bg-green-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">接受</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hs-accordion shadow rounded-lg">
+                  <button
+                    class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
+                  >
+                    <div class="pb-3 mb-1 flex">
+                      <a href="https://www.baidu.com" target="_blank">
+                        <img
+                          src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195652298.png"
+                          class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                          @click.stop
+                        />
+                      </a>
+                      <div class="ml-5 flex flex-col">
+                        <div>
+                          <span class="font-semibold text-base align-middle"> RocketZhu </span>
+                          <img
+                            v-if="$store.state.user.user_info.gender == 1"
+                            src="../assets/img/male.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                          <!-- 当 gender 不为 1 时，显示female图标 -->
+                          <img
+                            v-else
+                            src="../assets/img/female.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                        </div>
+                        <span class="text-xs block"> 2021 级 • 数理学院</span>
+                      </div>
+                    </div>
+                    <svg
+                      class="hs-accordion-active:hidden hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 block w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <svg
+                      class="hs-accordion-active:block hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 hidden w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 11L8.16086 5.31305C8.35239 5.13625 8.64761 5.13625 8.83914 5.31305L15 11"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300 px-4 pb-4"
+                  >
+                    <p class="text-gray-800 dark:text-gray-200">
+                      <em>This is the third item's accordion body.</em> It is hidden by default,
+                      until the collapse plugin adds the appropriate classes that we use to style
+                      each element. These classes control the overall appearance, as well as the
+                      showing and hiding via CSS transitions.
+                    </p>
+                    <div class="flex justify-end gap-2 mt-2 mr-2">
+                      <button
+                        class="bg-red-500 text-white px-2 rounded hover:bg-red-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">拒绝</span>
+                      </button>
+                      <button
+                        class="bg-green-500 text-white px-2 rounded hover:bg-green-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">接受</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hs-accordion shadow rounded-lg">
+                  <button
+                    class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
+                  >
+                    <div class="pb-3 mb-1 flex">
+                      <a href="https://www.baidu.com" target="_blank">
+                        <img
+                          src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195712012.png"
+                          class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                          @click.stop
+                        />
+                      </a>
+                      <div class="ml-5 flex flex-col">
+                        <div>
+                          <span class="font-semibold text-base align-middle"> M. Akagonio </span>
+                          <img
+                            v-if="$store.state.user.user_info.gender == 1"
+                            src="../assets/img/male.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                          <!-- 当 gender 不为 1 时，显示female图标 -->
+                          <img
+                            v-else
+                            src="../assets/img/female.svg"
+                            class="inline-block ml-1 h-4 w-4 align-middle"
+                          />
+                        </div>
+                        <span class="text-xs block"> 2021 级 • 环境与地理科学学院</span>
+                      </div>
+                    </div>
+                    <svg
+                      class="hs-accordion-active:hidden hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 block w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <svg
+                      class="hs-accordion-active:block hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 hidden w-3 h-3 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 11L8.16086 5.31305C8.35239 5.13625 8.64761 5.13625 8.83914 5.31305L15 11"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300 px-4 pb-4"
+                  >
+                    <p class="text-gray-800 dark:text-gray-200">
+                      <em>This is the third item's accordion body.</em> It is hidden by default,
+                      until the collapse plugin adds the appropriate classes that we use to style
+                      each element. These classes control the overall appearance, as well as the
+                      showing and hiding via CSS transitions.
+                    </p>
+                    <div class="flex justify-end gap-2 mt-2 mr-2">
+                      <button
+                        class="bg-red-500 text-white px-2 rounded hover:bg-red-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">拒绝</span>
+                      </button>
+                      <button
+                        class="bg-green-500 text-white px-2 rounded hover:bg-green-700 ease-in-out duration-100 h-7 transition-transform transform active:scale-90"
+                      >
+                        <span class="text-sm font-bold">接受</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </dialog>
         </div>
@@ -103,10 +564,13 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <img
-                    src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102202448804.png"
-                    class="rounded-full h-10 w-10 mt-1"
-                  />
+                  <a href="https://www.baidu.com" target="_blank">
+                    <img
+                      src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102202448804.png"
+                      class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                      @click.stop
+                    />
+                  </a>
                   <div class="ml-5 flex flex-col">
                     <div>
                       <span class="font-semibold text-base align-middle"> Yra </span>
@@ -173,10 +637,13 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <img
-                    src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195605253.png"
-                    class="rounded-full h-10 w-10 mt-1"
-                  />
+                  <a href="https://www.baidu.com" target="_blank">
+                    <img
+                      src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195605253.png"
+                      class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                      @click.stop
+                    />
+                  </a>
                   <div class="ml-5 flex flex-col">
                     <div>
                       <span class="font-semibold text-base align-middle"> 夜夜想起汤的话 </span>
@@ -243,10 +710,13 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <img
-                    src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195635637.png"
-                    class="rounded-full h-10 w-10 mt-1"
-                  />
+                  <a href="https://www.baidu.com" target="_blank">
+                    <img
+                      src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195635637.png"
+                      class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                      @click.stop
+                    />
+                  </a>
                   <div class="ml-5 flex flex-col">
                     <div>
                       <span class="font-semibold text-base align-middle"> burstlink </span>
@@ -313,10 +783,13 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <img
-                    src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195652298.png"
-                    class="rounded-full h-10 w-10 mt-1"
-                  />
+                  <a href="https://www.baidu.com" target="_blank">
+                    <img
+                      src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195652298.png"
+                      class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                      @click.stop
+                    />
+                  </a>
                   <div class="ml-5 flex flex-col">
                     <div>
                       <span class="font-semibold text-base align-middle"> RocketZhu </span>
@@ -383,10 +856,13 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <img
-                    src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195712012.png"
-                    class="rounded-full h-10 w-10 mt-1"
-                  />
+                  <a href="https://www.baidu.com" target="_blank">
+                    <img
+                      src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195712012.png"
+                      class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                      @click.stop
+                    />
+                  </a>
                   <div class="ml-5 flex flex-col">
                     <div>
                       <span class="font-semibold text-base align-middle"> M. Akagonio </span>
@@ -453,8 +929,9 @@
       <!-- Divider -->
       <div class="mx-4 w-px bg-gray-400 h-full"></div>
 
-      <!-- Right Side -->
+      <!-- Right Side 0 - team info-->
       <div
+        v-if="what_page == 0"
         class="flex flex-col w-1/2 bg-white p-5 rounded shadow-lg sm:overflow-y-scroll sm:h-[85vh]"
         style="min-width: 700px"
       >
@@ -471,25 +948,46 @@
           <span class="rich-text" v-html="raw_html"></span>
         </div>
       </div>
+
+      <!-- Right Side 1 - modify team-->
+      <div
+        v-else-if="what_page == 1"
+        class="flex flex-col w-1/2 bg-white p-4 rounded shadow-lg sm:h-[85vh]"
+        style="min-width: 700px"
+      >
+        <!-- 取消 -->
+        <div class="flex items-center justify-end mt-1 mb-3 mr-2 pb-0 h-10">
+          <div class="mb-3 mt-3 ml-0 flex">
+            <!-- 取消按钮 -->
+            <div
+              @click="what_page = 0"
+              class="flex items-center hover:cursor-pointer transition-transform transform active:scale-90"
+            >
+              <img src="../assets/img/cancel.svg" class="h-6 w-6 mr-2" />
+              <span class="text-lg font-bold">取消</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 创建队伍部分 -->
+        <div class="sm:overflow-y-scroll">
+          <TeamCreate />
+        </div>
+      </div>
     </div>
   </div>
 </template>
     
-  <script>
+<script setup>
 import { ref } from 'vue'
 import NavBar from '../components/NavBar.vue'
+import TeamCreate from '../components/TeamCreate.vue'
 import $ from 'jquery'
-// import $ from 'jquery'
 // import { server_url, contest_info_url, article_list_url } from '../constants/constants'
-// import { ref, reactive, watch } from 'vue'
 
-export default {
-  components: {
-    NavBar
-  },
-  setup() {
-    let role = ref(0) // 0 - 路人，1 - 组员， 2 - 队长
-    let raw_html = `<p>亲爱的旅行者们，</p>
+let what_page = ref(0) // 0 - team info, 1 - modify team
+let role = ref(2) // 0 - 路人，1 - 组员， 2 - 队长
+let raw_html = `<p>亲爱的旅行者们，</p>
 <p>你们准备好迎接挑战，与我们一同征战2023年原神全球总决赛了吗？🌟 我们正在寻找5位志同道合的高手，一起走上这段传奇之旅，不仅仅是为了荣誉和胜利，更是为了那份战斗的热血和团队的默契​<span class="" data-state="closed"><a class="px-0.5 text-green-600 !no-underline" target="_blank" rel="noreferrer"><sup>1</sup></a></span>​目标】 我们的目标是组建一个具有强烈团队精神、技术高超、战术灵活的队伍，共同参加即将到来的原神全球总决赛。我们相信，通过集结各位高手的力量，我们可以在比赛中大放异彩​<span class="" data-state="closed"><a class="px-0.5 text-green-600 !no-underline" target="_blank" rel="noreferrer"><sup>2</sup></a></span>​的是】</p>
 <ul>
 <li>原神等级至少达到50级以上的玩家</li>
@@ -512,13 +1010,6 @@ export default {
 <p>记住，每一个伟大的征程都始于一个勇敢的决定。⚔️ 让我们一起创造属于我们的传说吧​<span class="" data-state="closed"><a class="px-0.5 text-green-600 !no-underline" target="_blank" rel="noreferrer"><sup>5</sup></a></span>​日期】 申请加入的截止日期为：[具体日期]。</p>
 <p>旅行者们，让我们在原神的世界里，共同谱写辉煌！🌌</p>
 `
-
-    return {
-      raw_html,
-      role
-    }
-  }
-}
 
 // 取消 ESC 键关闭 dialog_apply
 $(document).ready(function () {

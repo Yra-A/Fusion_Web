@@ -288,7 +288,7 @@
             <!-- 返回按钮 -->
             <div
               @click="is_create_page = 0"
-              class="flex justify-start hover:cursor-pointer transition-transform transform active:scale-90"
+              class="flex items-center justify-start hover:cursor-pointer transition-transform transform active:scale-90"
             >
               <img src="../assets/img/back.svg" class="h-6 w-6" />
               <span class="text-base">返回</span>

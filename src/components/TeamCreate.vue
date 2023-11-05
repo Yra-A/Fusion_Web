@@ -4,7 +4,7 @@
       <!-- Top -->
       <div>
         <div class="border-b pb-2">
-          <span class="text-2xl font-semibold leading-7 text-gray-900">创建队伍</span>
+          <span class="text-2xl font-semibold leading-7 text-gray-900">填写队伍信息</span>
           <p class="mt-2 text-sm leading-6 text-gray-600">
             您创建的队伍将会在赛事板块中展示，创建成功后您可以随时修改队伍信息
           </p>
