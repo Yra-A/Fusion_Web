@@ -146,8 +146,9 @@
       <!-- Divider -->
       <div class="mx-4 w-px bg-gray-400 h-full"></div>
 
-      <!-- Right Side 0 / 1 - List-->
+      <!-- Right Side 0 - team list-->
       <div
+        v-if="is_create_page == 0"
         class="flex flex-col w-1/2 bg-white p-4 rounded shadow-lg sm:h-[85vh]"
         style="min-width: 700px"
       >
@@ -186,7 +187,7 @@
               </div>
             </router-link>
           </div>
-          <div class="flex">
+          <div class="flex" @click="is_create_page = 1">
             <div
               class="rounded p-1 hover:border-2 border-gray-400 group flex items-center hover:cursor-pointer transition-transform transform active:scale-95"
             >
@@ -274,6 +275,32 @@
           <TeamCard></TeamCard>
         </div>
       </div>
+
+      <!-- Right Side 1 - create team-->
+      <div
+        v-else
+        class="flex flex-col w-1/2 bg-white p-4 rounded shadow-lg sm:h-[85vh]"
+        style="min-width: 700px"
+      >
+        <!-- 返回 -->
+        <div class="flex items-center justify-between mt-1 mb-3 ml-1 pb-0 h-10">
+          <div class="mb-3 mt-3 ml-0 flex justify-between">
+            <!-- 返回按钮 -->
+            <div
+              @click="is_create_page = 0"
+              class="flex justify-start hover:cursor-pointer transition-transform transform active:scale-90"
+            >
+              <img src="../assets/img/back.svg" class="h-6 w-6" />
+              <span class="text-base">返回</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 创建队伍部分 -->
+        <div class="sm:overflow-y-scroll">
+          <TeamCreate />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -285,14 +312,17 @@ import { server_url, contest_info_url, team_list_url } from '../constants/consta
 import { ref, reactive, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TeamCard from '../components/TeamCard.vue'
+import TeamCreate from '../components/TeamCreate.vue'
 
 export default {
   components: {
     NavBar,
-    TeamCard
+    TeamCard,
+    TeamCreate
   },
   setup() {
     const route = useRoute()
+    let is_create_page = ref(0)
     const contest_id = route.params.contest_id
     const contest = reactive({
       contest_id: 0,
@@ -413,7 +443,9 @@ export default {
       currentPage,
       totalPage,
       nextPage,
-      prevPage
+      prevPage,
+      teams,
+      is_create_page
     }
   }
 }
