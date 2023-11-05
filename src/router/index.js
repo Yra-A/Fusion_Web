@@ -8,6 +8,9 @@ const ContestView = () => import('../views/ContestView.vue')
 const UserInfoUploadView = () => import('../views/UserInfoUploadView.vue')
 const UserProfileView = () => import('../views/UserProfileView.vue')
 const UserProfileUploadView = () => import('../views/UserProfileUploadView.vue')
+const TeamListView = () => import('../views/TeamListView.vue')
+const TeamView = () => import('../views/TeamView.vue')
+const TestView = () => import('../views/TestView.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,9 +46,25 @@ const router = createRouter({
       component: UserProfileUploadView
     },
     {
-      path: '/contest/:contest_id/',
+      path: '/contest/:contest_id',
       name: 'contest',
       component: ContestView
+    },
+    {
+      path: '/contest/:contest_id/team/list',
+      name: 'teamlist',
+      component: TeamListView
+    },
+    {
+      path: '/contest/:contest_id/team/:team_id',
+      name: 'team',
+      component: TeamView
+    },
+
+    {
+      path: '/test',
+      name: 'test',
+      component: TestView
     },
     {
       path: '/404/',

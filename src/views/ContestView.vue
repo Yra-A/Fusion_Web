@@ -5,9 +5,9 @@
 
     <!-- Content -->
     <div class="flex mx-auto mt-4 justify-center">
-      <!-- Left Side - Filters -->
+      <!-- Left Side - contest info -->
       <div
-        class="sm:max-h-[85vh] sm:overflow-auto min-w-[500px] content-cen w-80 bg-white p-8 pt-5 rounded shadow-xl"
+        class="sm:h-[85vh] sm:overflow-y-scroll min-w-[500px] content-cen w-80 bg-white p-8 pt-5 rounded shadow-xl"
       >
         <!-- 新增的图片展示部分 -->
         <div
@@ -39,16 +39,8 @@
           <div class="pb-3 mb-3 indent-8 text-gray-900">{{ contest.description }}</div>
 
           <h2 class="mb-5 flex items-center text-lg font-medium leading-7 text-slate-900">
-            <svg aria-hidden="true" viewBox="0 0 10 10" class="ml-2 h-4 w-4">
-              <path
-                d="M0 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5Z"
-                class="fill-indigo-300"
-              ></path>
-              <path
-                d="M6 1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V1Z"
-                class="fill-blue-300"
-              ></path></svg
-            ><span class="ml-2.5">Details</span>
+            <img src="../assets/img/blue_icon.svg" class="h-4 w-4" />
+            <span class="ml-2.5">Details</span>
           </h2>
 
           <div class="flow-root">
@@ -156,8 +148,7 @@
 
       <!-- Right Side 0 / 1 - List-->
       <div
-        v-if="whatPage == 0 || whatPage == 1"
-        class="flex flex-col w-1/2 bg-white p-4 rounded shadow-lg sm:max-h-[85vh]"
+        class="flex flex-col w-1/2 bg-white p-4 rounded shadow-lg sm:h-[85vh]"
         style="min-width: 700px"
       >
         <!-- 切换按钮 and 分页 -->
@@ -165,36 +156,37 @@
           class="flex items-center justify-between mt-3 mb-3 ml-1 pb-3 h-10 border-b border-b-slate-200"
         >
           <div class="flex gap-4">
-            <div
-              @click="change2ArticleList"
-              class="group flex items-center hover:cursor-pointer transition-transform transform active:scale-95"
-            >
-              <img
-                src="../assets/img/article_list.svg"
-                alt="Article List"
-                class="h-8 w-8 group-hover:fill-slate-600"
-                aria-hidden="true"
-              />
-              <span class="ml-3 block font-semibold" :class="{ 'text-gray-400': whatPage != 0 }"
-                >文章列表</span
+            <router-link :to="{ name: 'contest', params: { contest_id: contest.contest_id } }">
+              <div
+                @click="change2ArticleList"
+                class="group flex items-center hover:cursor-pointer transition-transform transform active:scale-95"
               >
-            </div>
+                <img
+                  src="../assets/img/article_list.svg"
+                  alt="Article List"
+                  class="h-8 w-8 group-hover:fill-slate-600"
+                  aria-hidden="true"
+                />
+                <span class="ml-3 block font-semibold">文章列表</span>
+              </div>
+            </router-link>
             <div v-if="contest.format == '团队竞赛'" class="flex items-center font-semibold">/</div>
-            <div
-              v-if="contest.format == '团队竞赛'"
-              @click="change2TeamList"
-              class="group flex items-center hover:cursor-pointer transition-transform transform active:scale-95"
+            <router-link
+              :to="{ name: 'teamlist', params: { contest_id: contest.contest_id, team_id: 2 } }"
             >
-              <img
-                src="../assets/img/team_list.svg"
-                alt="Team List"
-                class="h-8 w-8 group-hover:fill-slate-600"
-                aria-hidden="true"
-              />
-              <span class="ml-3 block font-semibold" :class="{ 'text-gray-400': whatPage != 1 }"
-                >团队列表</span
+              <div
+                v-if="contest.format == '团队竞赛'"
+                class="group flex items-center hover:cursor-pointer transition-transform transform active:scale-95"
               >
-            </div>
+                <img
+                  src="../assets/img/team_list.svg"
+                  alt="Team List"
+                  class="h-8 w-8 group-hover:fill-slate-600"
+                  aria-hidden="true"
+                />
+                <span class="ml-3 block font-semibold text-gray-400">团队列表</span>
+              </div>
+            </router-link>
           </div>
           <!-- Pagination -->
           <div class="flex justify-end">
@@ -251,7 +243,7 @@
         </div>
 
         <!-- 文章列表 -->
-        <div v-if="whatPage == 0" class="sm:overflow-auto">
+        <div class="sm:overflow-y-scroll">
           <div
             v-for="article in articles"
             :key="'link-' + article.article_id"
@@ -264,7 +256,6 @@
             ></ArticleCard>
           </div>
         </div>
-        <!-- <TeamListView v-else-if="whatPage == 1" /> -->
       </div>
     </div>
   </div>
@@ -274,7 +265,7 @@
 import NavBar from '../components/NavBar.vue'
 import $ from 'jquery'
 import { server_url, contest_info_url, article_list_url } from '../constants/constants'
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import ArticleCard from '../components/ArticleCard.vue'
 
@@ -313,8 +304,6 @@ export default {
       },
       created_time: 0
     })
-    const whatPage = ref(0) // 0 - Article List, 1 - Team List, 2 - Article Detail, 3 - Team Detail
-
     const currentPage = ref(1)
     const totalPage = ref(0)
     const limit = 10 // 每页显示的数量
@@ -358,10 +347,10 @@ export default {
 
     const getArticleList = () => {
       $.ajax({
-        url: `${server_url}${article_list_url}`, // 请确保你有这个变量或者替换成适当的URL路径
+        url: `${server_url}${article_list_url}`,
         type: 'GET',
         data: {
-          contest_id: contest.contest_id, // 请确保你有这个变量或者根据实际情况替换
+          contest_id: contest.contest_id,
           limit: limit,
           offset: (currentPage.value - 1) * limit
         },
@@ -392,39 +381,25 @@ export default {
     const nextPage = () => {
       if (currentPage.value < totalPage.value) {
         currentPage.value += 1
-        if (whatPage.value == 0) {
-          getArticleList()
-        }
       }
     }
     const prevPage = () => {
       if (currentPage.value > 1) {
         currentPage.value -= 1
-        if (whatPage.value == 0) {
-          getArticleList()
-        }
       }
     }
 
     const change2ArticleList = () => {
-      whatPage.value = 0
       currentPage.value = 0
       totalPage.value = 0
-      getArticleList()
     }
 
-    const change2TeamList = () => {
-      whatPage.value = 1
-      currentPage.value = 0
-      totalPage.value = 0
-    }
+    watch(currentPage, getArticleList)
 
     return {
       contest,
-      whatPage,
       formattedCreatedTime,
       change2ArticleList,
-      change2TeamList,
       currentPage,
       totalPage,
       articles,
@@ -435,7 +410,7 @@ export default {
   }
 }
 </script>
-  
+
 <style scoped>
 </style>
   

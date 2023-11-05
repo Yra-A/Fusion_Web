@@ -17,6 +17,8 @@ const team_list_url = '/team/list'
 const user_profile_url = '/user/profile/{user_id}'
 const user_profile_upload_url = '/user/profile/upload'
 
+const utils_upload_img_url = '/fusion/utils/upload/img'
+
 /* 前端 */
 const web_url = 'http://localhost:5173'
 const web_contest_url = web_url + '/contest'
@@ -39,5 +41,6 @@ export {
   user_profile_url,
   user_profile_upload_url,
   web_user_profile_url,
-  web_user_profile_upload_url
+  web_user_profile_upload_url,
+  utils_upload_img_url
 }

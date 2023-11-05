@@ -7,7 +7,7 @@
     <div class="flex mx-auto mt-8 justify-center">
       <!-- Left Side - Filters -->
       <div
-        class="sm:max-h-[85vh] sm:overflow-auto min-w-[500px] flex flex-col content-cen w-80 bg-white p-4 rounded shadow shadow-xl"
+        class="sm:h-[85vh] sm:overflow-y-scroll min-w-[500px] flex flex-col content-cen w-80 bg-white p-4 rounded shadow shadow-xl"
         style="min-width: 300px"
       >
         <div class="block mt-3 mb-3 pb-3 h-10 border-b border-b-slate-200">
@@ -88,7 +88,7 @@
 
       <!-- Right Side - Event Blocks -->
       <div
-        class="sm:max-h-[85vh] min-w-[500px] flex flex-col w-1/2 bg-white p-4 rounded shadow-lg"
+        class="sm:h-[85vh] min-w-[500px] flex flex-col w-1/2 bg-white p-4 rounded shadow-lg"
         style="min-width: 700px"
       >
         <div class="block">
@@ -144,7 +144,7 @@
             </button>
           </div>
         </div>
-        <div class="sm:overflow-auto">
+        <div class="sm:overflow-y-scroll">
           <router-link
             :to="{ name: 'contest', params: { contest_id: contest.contest_id } }"
             v-for="contest in contests"
