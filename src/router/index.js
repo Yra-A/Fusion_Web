@@ -10,7 +10,6 @@ const UserProfileView = () => import('../views/UserProfileView.vue')
 const UserProfileUploadView = () => import('../views/UserProfileUploadView.vue')
 const TeamListView = () => import('../views/TeamListView.vue')
 const TeamView = () => import('../views/TeamView.vue')
-const TestView = () => import('../views/TestView.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,12 +58,6 @@ const router = createRouter({
       path: '/contest/:contest_id/team/:team_id',
       name: 'team',
       component: TeamView
-    },
-
-    {
-      path: '/test',
-      name: 'test',
-      component: TestView
     },
     {
       path: '/404/',

@@ -1,13 +1,9 @@
 <template>
-  <vue3-tinymce
-    v-model="state.content"
-    :setting="state.setting"
-    script-src="../../public/tinymce/tinymce.min.js"
-  />
+  <vue3-tinymce v-model="content" :setting="setting" script-src="/public/tinymce/tinymce.min.js" />
 </template>
   
   <script setup>
-import { reactive, watch } from 'vue'
+import { watch, ref } from 'vue'
 import { server_url, utils_upload_img_url } from '../constants/constants'
 // 引入组件
 import Vue3Tinymce from '@jsdawn/vue3-tinymce'
@@ -18,8 +14,8 @@ const setting = {
   toolbar:
     'bold italic underline h1 h2 blockquote numlist bullist link image | removeformat fullscreen',
   plugins: 'link image table lists fullscreen',
-  height: 650, //编辑器高度
-  min_height: 400,
+  height: 500, //编辑器高度
+  min_height: 500,
   link_default_target: '_blank',
   link_title: false,
   nonbreaking_force_tab: true,
@@ -38,20 +34,16 @@ const setting = {
 
   // 以中文简体为例
   language: 'zh-Hans',
-  language_url: '/tinymce/langs/zh-Hans.js'
+  language_url: '/public/tinymce/langs/zh-Hans.js'
 }
 
-const state = reactive({
-  content: '',
-  // editor 配置项
-  setting: setting
-})
+const content = ref('')
 
-watch(
-  () => state.content,
-  (newVal) => {
-    console.log(newVal)
-  }
-)
+const emit = defineEmits(['update-content'])
+
+// 监听内部状态变化，并向父组件发射事件
+watch(content, (newValue) => {
+  emit('update-content', newValue)
+})
 </script>
   

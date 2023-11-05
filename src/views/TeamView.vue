@@ -10,13 +10,13 @@
       >
         <div class="mb-6 mt-2 ml-0 flex justify-between">
           <!-- 返回按钮 -->
-          <a
-            href="/wuhu.html"
+          <router-link
+            :to="{ name: 'teamlist', params: { contest_id: 2 } }"
             class="flex justify-start hover:cursor-pointer transition-transform transform active:scale-90"
           >
             <img src="../assets/img/back.svg" class="h-6 w-6" />
             <span class="text-base">返回</span>
-          </a>
+          </router-link>
 
           <!-- 申请加入 / 管理队伍信息 -->
           <!-- You can open the modal using ID.showModal() method -->
