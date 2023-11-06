@@ -4,7 +4,9 @@
     <div class="min-h-screen w-full bg-gradient-to-b from-blue-400 to-transparent">
       <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
         <div class="h-32 rounded-lg lg:col-span-2">
-          <div class="pt-10 pl-60 text-3xl font-blod text-white">我的简历</div>
+          <div class="pt-10 pl-60 text-3xl font-blod text-white">
+            {{ $store.state.user.user_info.nickname }}的简历
+          </div>
         </div>
         <div class="h-32 rounded-lg pt-10">
           <a
@@ -15,8 +17,27 @@
           </a>
         </div>
       </div>
+
       <div class="mx-auto pt-10 px-5 md:px-20 rounded-lg bg-white w-full md:w-2/3 h-4/5 shadow-xl">
-        <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block">基础信息</h1>
+        <div class="col-span-full pt-5">
+          <div
+            class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
+          >
+            <div class="text-center">
+              <input type="file" id="avatarUpload" @change="avatarUpload" class="sr-only" />
+              <label for="avatarUpload" class="cursor-pointer">
+                <span
+                  class="inline-block rounded border border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-500 hover:bg-indigo-500 hover:text-white focus:outline-none focus:ring active:bg-indigo-400"
+                >
+                  上传头像
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
+          基础信息
+        </h1>
         <!-- Resume content -->
         <div class="grid grid-cols-2 gap-2 pt-5">
           <div>
@@ -60,17 +81,25 @@
   </section>
 </template>
 <script>
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { ref } from 'vue'
 import $ from 'jquery'
 import NavBar from '../components/NavBar.vue'
-import { server_url, user_profile_url, web_user_profile_upload_url } from '../constants/constants'
-import { imageProps } from 'ant-design-vue/es/vc-image'
+import {
+  server_url,
+  get_user_profile_url,
+  web_user_profile_upload_url,
+  web_user_profile_upload_relative_url
+} from '../constants/constants'
 export default {
   name: 'UserProfileView',
   components: {
     NavBar
   },
   setup() {
+    const router = useRouter()
+    const store = useStore()
     const realname = ref('')
     const enrolment_year = ref('')
     const college = ref('')
@@ -81,11 +110,18 @@ export default {
     const introduction = ref('')
     const honors = ref('')
     const images = ref('')
+    const has_profile = ref(false)
+    const user_profile_url = get_user_profile_url(store.state.user.user_info.user_id)
 
-    const fetchData = async () => {
+    const getUserProfileInfo = () => {
+      //const token = store.state.user.token
+
       $.ajax({
-        url: `${server_url}${user_profile_url}`, // 替换为你的 API 端点
+        url: `${server_url}${user_profile_url}`,
         type: 'GET',
+        headers: {
+          Authorization: `Bearer 2f68dbbf-519d-4f01-9636-e2421b68f379`
+        },
         success: function (resp) {
           realname.value = resp.user_profile_info.user_info.realname
           enrolment_year.value = resp.user_profile_info.user_info.enrollment_year
@@ -97,13 +133,42 @@ export default {
           introduction.value = resp.user_profile_info.introduction
           honors.value = resp.user_profile_info.honors
           images.value = resp.user_profile_info.images
+          has_profile.value = resp.user_profile_info.user_info.has_profile
         },
         error: function (xhr, status, error) {
           console.error(error)
         }
       })
     }
-    fetchData()
+    if (!has_profile.value) {
+      router.push(web_user_profile_upload_relative_url) // 将用户重定向到创建profile的页面
+    }
+
+    const avatarUpload = (event) => {
+      const file = event.target.files[0]
+      if (!file) {
+        return // 如果没有文件被选中，则不执行任何操作
+      }
+
+      const formData = new FormData()
+      formData.append('file', file) // 'file' 是你要在服务器端接收的字段名
+
+      // 使用 $.ajax 发送请求
+      $.ajax({
+        url: 'https://mock.apifox.com/m1/3429271-0-default/utils/upload/img', // 替换为你的服务器端点
+        type: 'POST',
+        data: formData,
+        processData: false, // 告诉jQuery不要处理发送的数据
+        contentType: false, // 告诉jQuery不要设置内容类型
+        success: function (response) {
+          console.log('Upload successful.', response)
+        },
+        error: function (xhr, status, error) {
+          console.error('Upload failed:', error)
+        }
+      })
+    }
+    getUserProfileInfo()
 
     console.log(realname.value)
     return {
@@ -117,10 +182,15 @@ export default {
       introduction,
       honors,
       images,
-      fetchData,
+      getUserProfileInfo,
       server_url,
+      web_user_profile_upload_url,
+      avatarUpload,
       user_profile_url,
-      web_user_profile_upload_url
+      store,
+      has_profile,
+      web_user_profile_upload_relative_url
+      //token
     }
   }
 }

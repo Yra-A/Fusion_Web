@@ -230,9 +230,11 @@ import { web_user_profile_url } from '../constants/constants'
 export default {
   setup() {
     const store = useStore()
+
     const logout = () => {
       store.commit('logout')
     }
+
     return {
       logout,
       web_user_profile_url

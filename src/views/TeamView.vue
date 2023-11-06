@@ -564,7 +564,7 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <a href="https://www.baidu.com" target="_blank">
+                  <a :href="web_user_profile_url" target="_blank">
                     <img
                       src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102202448804.png"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
@@ -637,7 +637,7 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <a href="https://www.baidu.com" target="_blank">
+                  <a :href="web_user_profile_url" target="_blank">
                     <img
                       src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195605253.png"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
@@ -710,7 +710,7 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <a href="https://www.baidu.com" target="_blank">
+                  <a :href="web_user_profile_url" target="_blank">
                     <img
                       src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195635637.png"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
@@ -783,7 +783,7 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <a href="https://www.baidu.com" target="_blank">
+                  <a :href="web_user_profile_url" target="_blank">
                     <img
                       src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195652298.png"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
@@ -856,7 +856,7 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <a href="https://www.baidu.com" target="_blank">
+                  <a :href="web_user_profile_url" target="_blank">
                     <img
                       src="https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231102195712012.png"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
@@ -983,6 +983,7 @@ import { ref } from 'vue'
 import NavBar from '../components/NavBar.vue'
 import TeamCreate from '../components/TeamCreate.vue'
 import $ from 'jquery'
+import { web_user_profile_url } from '../constants/constants'
 // import { server_url, contest_info_url, article_list_url } from '../constants/constants'
 
 let what_page = ref(0) // 0 - team info, 1 - modify team
