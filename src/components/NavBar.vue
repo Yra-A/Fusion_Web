@@ -55,8 +55,8 @@
                     <!-- ... 用户下拉菜单 ... -->
                     <ul class="dropdown space-y-1 px-4 sm:w-52 right-0 sm:right-2">
                       <li>
-                        <a
-                          href=""
+                        <router-link
+                          :to="{ name: 'home' }"
                           class="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-700"
                         >
                           <svg
@@ -79,8 +79,8 @@
                             />
                           </svg>
 
-                          <span class="text-sm font-medium"> General </span>
-                        </a>
+                          <span class="text-sm font-medium"> Home </span>
+                        </router-link>
                       </li>
 
                       <li>
