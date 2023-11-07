@@ -17,6 +17,7 @@
             <div class="mt-2">
               <input
                 type="text"
+                v-model="formData.mobilePhone"
                 name="mobile_phone"
                 id="mobile_phone"
                 autocomplete="address-level2"
@@ -32,6 +33,7 @@
             <div class="mt-2">
               <input
                 type="text"
+                v-model="formData.qqNumber"
                 name="qq_number"
                 id="qq_number"
                 autocomplete="address-level1"
@@ -47,6 +49,7 @@
             <div class="mt-2">
               <input
                 type="text"
+                v-model="formData.wechatNumber"
                 name="wechat_number"
                 id="wechat_number"
                 autocomplete="wechat_number"
@@ -61,6 +64,7 @@
             <div class="mt-2">
               <textarea
                 id="introduction"
+                v-model="formData.introduction"
                 name="introduction"
                 rows="3"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -76,6 +80,7 @@
             <div class="mt-2">
               <textarea
                 id="honors"
+                v-model="formData.honors"
                 name="honors"
                 rows="3"
                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -123,17 +128,19 @@
 </template>
     
 <script >
+import { useStore } from 'vuex'
 import { ref } from 'vue'
 import $ from 'jquery'
 import { PhotoIcon } from '@heroicons/vue/24/solid'
 import NavBar from '../components/NavBar.vue'
-import { server_url, user_profile_upload_url } from '../constants/constants'
+import { server_url, user_profile_upload_url, get_user_profile_url } from '../constants/constants'
 export default {
   name: 'UserProfileUploadView',
   components: {
     NavBar,
     PhotoIcon
   },
+
   setup() {
     const formData = ref({
       mobilePhone: '',
@@ -143,6 +150,35 @@ export default {
       honors: '',
       imageFile: null
     })
+
+    const store = useStore()
+    const user_profile_url = get_user_profile_url(store.state.user.user_info.user_id)
+
+    const getUserProfileInfo = () => {
+      //const token = store.state.user.token
+
+      $.ajax({
+        url: `${server_url}${user_profile_url}`,
+        type: 'GET',
+        headers: {
+          Authorization: `Bearer 2f68dbbf-519d-4f01-9636-e2421b68f379`
+        },
+        success: function (resp) {
+          formData.value.mobilePhone = resp.user_profile_info.user_info.mobile_phone
+          formData.value.qqNumber = resp.user_profile_info.qq_number
+          formData.value.wechatNumber = resp.user_profile_info.wechat_number
+          formData.value.introduction = resp.user_profile_info.introduction
+          formData.value.honors = resp.user_profile_info.honors
+          formData.value.has_profile = resp.user_profile_info.user_info.has_profile
+        },
+        error: function (xhr, status, error) {
+          console.error(error)
+        }
+      })
+    }
+
+    getUserProfileInfo()
+
     const submitForm = async () => {
       const url = `${server_url}${user_profile_upload_url}`
 
@@ -164,7 +200,10 @@ export default {
       formData,
       submitForm,
       server_url,
-      user_profile_upload_url
+      user_profile_upload_url,
+      getUserProfileInfo,
+      store,
+      get_user_profile_url
     }
   }
 }

@@ -35,7 +35,7 @@ const router = createRouter({
       component: UserInfoUploadView
     },
     {
-      path: '/user/profile',
+      path: '/user/profile/:user_id',
       name: 'userprofile',
       component: UserProfileView
     },
