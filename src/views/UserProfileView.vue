@@ -132,7 +132,7 @@ export default {
         url: `${server_url}${user_profile_url}`,
         type: 'GET',
         headers: {
-          Authorization: `Bearer 2f68dbbf-519d-4f01-9636-e2421b68f379`
+          Authorization: `Bearer ${store.state.user.token}`
         },
         success: function (resp) {
           realname.value = resp.user_profile_info.user_info.realname
@@ -153,9 +153,9 @@ export default {
       })
     }
 
-    /*if (!has_profile.value) {
+    if (!has_profile.value) {
       router.push(web_user_profile_upload_relative_url) // 将用户重定向到创建profile的页面
-    }*/
+    }
 
     const avatarUpload = (event) => {
       const file = event.target.files[0]

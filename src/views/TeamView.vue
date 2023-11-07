@@ -104,13 +104,19 @@
                       class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
                     >
                       <div class="pb-3 mb-1 flex">
-                        <a :href="application.member_info.avatar_url" target="_blank">
+                        <router-link
+                          :to="{
+                            name: 'userprofile',
+                            params: { user_id: application.member_info.user_id }
+                          }"
+                          target="_blank"
+                        >
                           <img
                             :src="application.member_info.avatar_url"
                             class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
                             @click.stop
                           />
-                        </a>
+                        </router-link>
                         <div class="ml-5 flex flex-col">
                           <div>
                             <span class="font-semibold text-base align-middle">{{
@@ -249,13 +255,27 @@
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
               >
                 <div class="pb-3 mb-1 flex">
-                  <a href="https://www.baidu.com" target="_blank">
+                  <router-link
+                    v-if="role == 1 || role == 2"
+                    :to="{
+                      name: 'userprofile',
+                      params: { user_id: member.member_info.user_id }
+                    }"
+                    target="_blank"
+                  >
                     <img
                       :src="member.member_info.avatar_url"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
                       @click.stop
                     />
-                  </a>
+                  </router-link>
+                  <div v-else>
+                    <img
+                      :src="member.member_info.avatar_url"
+                      class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                      @click.stop
+                    />
+                  </div>
                   <div class="ml-5 flex flex-col">
                     <div>
                       <span class="font-semibold text-base align-middle">
