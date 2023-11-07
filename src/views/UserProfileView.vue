@@ -19,27 +19,11 @@
       </div>
 
       <div class="mx-auto pt-10 px-5 md:px-20 rounded-lg bg-white w-full md:w-2/3 h-4/5 shadow-xl">
-        <div class="col-span-full pt-5">
-          <div
-            class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
-          >
-            <div class="text-center">
-              <input type="file" id="avatarUpload" @change="avatarUpload" class="sr-only" />
-              <label for="avatarUpload" class="cursor-pointer">
-                <span
-                  class="inline-block rounded border border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-500 hover:bg-indigo-500 hover:text-white focus:outline-none focus:ring active:bg-indigo-400"
-                >
-                  上传头像
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
         <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
           基础信息
         </h1>
         <!-- Resume content -->
-        <div class="grid grid-cols-2 gap-2 pt-5">
+        <div class="grid grid-cols-3 gap-2 pt-5">
           <div>
             <p class="infotemplate pt-5">真实姓名</p>
             <p class="">{{ realname }}</p>
@@ -59,7 +43,33 @@
             <p class="infotemplate pt-5">微信号码</p>
             <p class="">{{ wechat_number }}</p>
           </div>
+
+          <div class="text-center">
+            <input type="file" id="avatarUpload" @change="avatarUpload" class="sr-only" />
+            <label for="avatarUpload" class="cursor-pointer">
+              <div class="avatar">
+                <a class="group relative block bg-black">
+                  <img
+                    alt="Developer"
+                    :src="$store.state.user.user_info.avatar_url"
+                    class="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50"
+                  />
+
+                  <div class="relative p-4 sm:p-6 lg:p-8">
+                    <div class="mt-12 sm:mt-12 lg:mt-12">
+                      <div
+                        class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100 pb-20"
+                      >
+                        <p class="text-sm text-white">点击上传头像</p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </label>
+          </div>
         </div>
+
         <div>
           <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
             个人介绍
@@ -75,10 +85,12 @@
         <div>
           <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">img</h1>
           <div class="pt-10">img</div>
+          <div class="pt-20"></div>
         </div>
       </div>
     </div>
   </section>
+  <div class="mb-20"></div>
 </template>
 <script>
 import { useRouter } from 'vue-router'
@@ -140,9 +152,10 @@ export default {
         }
       })
     }
-    if (!has_profile.value) {
+
+    /*if (!has_profile.value) {
       router.push(web_user_profile_upload_relative_url) // 将用户重定向到创建profile的页面
-    }
+    }*/
 
     const avatarUpload = (event) => {
       const file = event.target.files[0]
@@ -168,6 +181,7 @@ export default {
         }
       })
     }
+
     getUserProfileInfo()
 
     console.log(realname.value)
