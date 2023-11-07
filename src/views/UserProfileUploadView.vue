@@ -4,7 +4,7 @@
   <form @submit.prevent="submitForm">
     <div class="space-y-12 px-80">
       <div class="border-b border-gray-900/10 pb-12">
-        <h2 class="text-base font-semibold leading-7 text-gray-900">用户档案</h2>
+        <h2 class="text-base font-semibold leading-7 text-gray-900 pt-10">用户档案</h2>
         <p class="mt-1 text-sm leading-6 text-gray-600">
           上传用户档案，包括手机号、个人介绍、QQ 号码、微信号码、所获荣誉列表、上传的图片列表
         </p>
@@ -115,8 +115,14 @@
       </div>
     </div>
 
-    <div class="mt-6 flex items-center justify-end gap-x-6">
-      <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+    <div class="mt-6 flex items-center justify-end gap-x-6 pr-60">
+      <a
+        type="button"
+        class="text-sm font-semibold leading-6 text-gray-900"
+        :href="web_user_profile_url"
+      >
+        Cancel
+      </a>
       <button
         type="submit"
         class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -125,6 +131,7 @@
       </button>
     </div>
   </form>
+  <div class="mb-20"></div>
 </template>
     
 <script >
@@ -133,7 +140,12 @@ import { ref } from 'vue'
 import $ from 'jquery'
 import { PhotoIcon } from '@heroicons/vue/24/solid'
 import NavBar from '../components/NavBar.vue'
-import { server_url, user_profile_upload_url, get_user_profile_url } from '../constants/constants'
+import {
+  server_url,
+  user_profile_upload_url,
+  get_user_profile_url,
+  web_user_profile_url
+} from '../constants/constants'
 export default {
   name: 'UserProfileUploadView',
   components: {
@@ -189,6 +201,7 @@ export default {
         success: function (response) {
           // 处理成功的响应
           console.log(response)
+          window.location.href = web_user_profile_url
         },
         error: function (xhr, status, error) {
           // 处理错误
@@ -203,7 +216,8 @@ export default {
       user_profile_upload_url,
       getUserProfileInfo,
       store,
-      get_user_profile_url
+      get_user_profile_url,
+      web_user_profile_url
     }
   }
 }
