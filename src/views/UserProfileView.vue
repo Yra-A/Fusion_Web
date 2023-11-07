@@ -112,7 +112,8 @@ import {
   server_url,
   get_user_profile_url,
   web_user_profile_upload_url,
-  web_user_profile_upload_relative_url
+  web_user_profile_upload_relative_url,
+  user_profile_upload_url
 } from '../constants/constants'
 export default {
   name: 'UserProfileView',
@@ -184,7 +185,7 @@ export default {
 
       // 使用 $.ajax 发送请求
       $.ajax({
-        url: 'https://mock.apifox.com/m1/3429271-0-default/utils/upload/img', // 替换为你的服务器端点
+        url: `${server_url}${user_profile_upload_url}`, // 替换为你的服务器端点
         type: 'POST',
         data: formData,
         processData: false, // 告诉jQuery不要处理发送的数据
@@ -219,6 +220,7 @@ export default {
       web_user_profile_upload_url,
       avatarUpload,
       user_profile_url,
+      user_profile_upload_url,
       store,
       has_profile,
       web_user_profile_upload_relative_url,
