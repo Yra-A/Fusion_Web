@@ -8,6 +8,13 @@ import { server_url, utils_upload_img_url } from '../constants/constants'
 // 引入组件
 import Vue3Tinymce from '@jsdawn/vue3-tinymce'
 
+const props = defineProps({
+  description: {
+    type: String,
+    default: ''
+  }
+})
+
 const setting = {
   menubar: false,
   toolbar_mode: 'sliding',
@@ -38,6 +45,7 @@ const setting = {
 }
 
 const content = ref('')
+content.value = props.description
 
 const emit = defineEmits(['update-content'])
 

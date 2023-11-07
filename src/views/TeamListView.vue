@@ -9,6 +9,14 @@
       <div
         class="sm:h-[85vh] sm:overflow-y-scroll min-w-[500px] content-cen w-80 bg-white p-8 pt-5 rounded shadow-xl"
       >
+        <!-- 返回按钮 -->
+        <router-link
+          :to="{ name: 'home' }"
+          class="flex justify-start hover:cursor-pointer transition-transform transform active:scale-90 mb-2"
+        >
+          <img src="../assets/img/back.svg" class="h-6 w-6" />
+          <span class="text-base">返回</span>
+        </router-link>
         <!-- 新增的图片展示部分 -->
         <div
           class="mb-6 rounded overflow-hidden hover:scale-105 transform transition duration-300 ease-in-out flex justify-center"
@@ -187,7 +195,7 @@
               </div>
             </router-link>
           </div>
-          <div class="flex" @click="is_create_page = 1">
+          <div v-if="$store.state.user.is_login" class="flex" @click="is_create_page = 1">
             <div
               class="rounded p-1 hover:border-2 border-gray-400 group flex items-center hover:cursor-pointer transition-transform transform active:scale-95"
             >
@@ -255,24 +263,13 @@
 
         <!-- 队伍列表 -->
         <div class="sm:overflow-y-scroll">
-          <!-- <div
+          <router-link
             v-for="team in teams"
-            :key="'link-' + team.team_id"
-            class="block transition-transform transform active:scale-95"
+            :key="team.team_id"
+            :to="{ name: 'team', params: { contest_id: contest_id, team_id: team.team_id } }"
           >
-            <TeamCard
-              :title="team.title"
-              :author="team.author"
-              :created_time="team.created_time"
-            ></TeamCard>
-          </div> -->
-          <router-link :to="{ name: 'team', params: { contest_id: contest_id, team_id: 2 } }">
-            <TeamCard></TeamCard>
+            <TeamCard :team_brief_info="team"></TeamCard>
           </router-link>
-          <TeamCard></TeamCard>
-          <TeamCard></TeamCard>
-          <TeamCard></TeamCard>
-          <TeamCard></TeamCard>
         </div>
       </div>
 
@@ -305,150 +302,146 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import NavBar from '../components/NavBar.vue'
 import $ from 'jquery'
-import { server_url, contest_info_url, team_list_url } from '../constants/constants'
+import { server_url, contest_info_url, get_team_list_url } from '../constants/constants'
 import { ref, reactive, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TeamCard from '../components/TeamCard.vue'
 import TeamCreate from '../components/TeamCreate.vue'
+import { useStore } from 'vuex'
 
-export default {
-  components: {
-    NavBar,
-    TeamCard,
-    TeamCreate
-  },
-  setup() {
-    const route = useRoute()
-    let is_create_page = ref(0)
-    const contest_id = route.params.contest_id
-    const contest = reactive({
-      contest_id: 0,
-      title: '',
-      image_url: '',
-      field: '',
-      format: '',
-      description: '',
-      contest_core_info: {
-        deadline: 0,
-        fee: '',
-        contact: [
-          {
-            name: '',
-            phone: '',
-            email: ''
-          }
-        ],
-        team_size: {
-          min: 0,
-          max: 0
-        },
-        participant_requirements: '',
-        official_website: '',
-        additional_info: ''
-      },
-      created_time: 0
-    })
-    const currentPage = ref(1)
-    const totalPage = ref(0)
-    const limit = 10 // 每页显示的数量
-
-    const teams = ref([
+const store = useStore()
+const route = useRoute()
+let is_create_page = ref(0)
+const contest_id = route.params.contest_id
+const contest = reactive({
+  contest_id: 0,
+  title: '',
+  image_url: '',
+  field: '',
+  format: '',
+  description: '',
+  contest_core_info: {
+    deadline: 0,
+    fee: '',
+    contact: [
       {
-        team_id: 0,
-        title: 'string',
-        author_id: 0,
-        author: 'string',
-        created_time: 0
+        name: '',
+        phone: '',
+        email: ''
       }
-    ])
+    ],
+    team_size: {
+      min: 0,
+      max: 0
+    },
+    participant_requirements: '',
+    official_website: '',
+    additional_info: ''
+  },
+  created_time: 0
+})
+const currentPage = ref(1)
+const totalPage = ref(0)
+const limit = 10 // 每页显示的数量
 
-    const formattedCreatedTime = (created_time) => {
-      if (!created_time) {
-        return '' // 或其他默认值
-      }
-      const date = new Date(created_time * 1000) // 假设 created_time 是 Unix 时间戳 (秒)
-      const year = date.getFullYear()
-      const month = date.getMonth() + 1
-      const day = date.getDate()
-      const hour = date.getHours()
-      const minute = date.getMinutes()
-      const paddedMinute = minute < 10 ? '0' + minute : minute
-
-      return `${year}-${month}-${day} ${hour}:${paddedMinute}`
-    }
-
-    const getContestInfo = () => {
-      $.ajax({
-        url: `${server_url}${contest_info_url}/${contest_id}`,
-        type: 'GET',
-        success: function (resp) {
-          console.log(resp)
-          Object.assign(contest, resp.contest)
-        }
-      })
-    }
-    getContestInfo()
-
-    const getTeamList = () => {
-      $.ajax({
-        url: `${server_url}${team_list_url}`,
-        type: 'GET',
-        data: {
-          contest_id: contest.contest_id,
-          limit: limit,
-          offset: (currentPage.value - 1) * limit
-        },
-        success: function (resp) {
-          if (resp.status_code === 0) {
-            totalPage.value = Math.ceil(resp.total / limit)
-            const fetched_teams = resp.team_list.map((item) => {
-              return {
-                team_id: item.team_brief_info.team_id,
-                title: item.team_brief_info.title,
-                author_id: item.team_brief_info.author_id,
-                author: item.team_brief_info.author,
-                created_time: item.team_brief_info.created_time
-              }
-            })
-            teams.value = fetched_teams
-          } else {
-            console.error('Error with response:', resp.status_msg)
-          }
-        },
-        error: function (error) {
-          console.error('Error fetching teams:', error)
-        }
-      })
-    }
-
-    const nextPage = () => {
-      if (currentPage.value < totalPage.value) {
-        currentPage.value += 1
-      }
-    }
-    const prevPage = () => {
-      if (currentPage.value > 1) {
-        currentPage.value -= 1
-      }
-    }
-
-    watch(currentPage, getTeamList)
-
-    return {
-      contest,
-      formattedCreatedTime,
-      currentPage,
-      totalPage,
-      nextPage,
-      prevPage,
-      teams,
-      is_create_page
+const teams = ref([
+  {
+    team_id: 0,
+    title: '',
+    goal: '',
+    cur_people_num: 0,
+    created_time: 0,
+    leader_info: {
+      user_id: 0,
+      nickname: '',
+      college: '',
+      avatar_url: '',
+      gender: 0,
+      enrollment_year: 0,
+      honors: []
     }
   }
+])
+
+const formattedCreatedTime = (created_time) => {
+  if (!created_time) {
+    return '' // 或其他默认值
+  }
+  const date = new Date(created_time * 1000) // 假设 created_time 是 Unix 时间戳 (秒)
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const paddedMinute = minute < 10 ? '0' + minute : minute
+
+  return `${year}-${month}-${day} ${hour}:${paddedMinute}`
 }
+
+const getContestInfo = () => {
+  $.ajax({
+    url: `${server_url}${contest_info_url}/${contest_id}`,
+    type: 'GET',
+    success: function (resp) {
+      console.log(resp)
+      Object.assign(contest, resp.contest)
+    }
+  })
+}
+getContestInfo()
+
+const getTeamList = () => {
+  const team_list_url = get_team_list_url(contest_id)
+
+  $.ajax({
+    url: `${server_url}${team_list_url}`,
+    type: 'GET',
+    data: {
+      limit: limit,
+      offset: (currentPage.value - 1) * limit
+    },
+    headers: {
+      Authorization: `Bearer ${store.state.user.token}`
+    },
+    success: function (resp) {
+      if (resp.status_code === 0) {
+        totalPage.value = Math.ceil(resp.total / limit)
+        const fetched_teams = resp.team_list.map((item) => {
+          return {
+            team_id: item.team_brief_info.team_id,
+            title: item.team_brief_info.title,
+            goal: item.team_brief_info.goal,
+            cur_people_num: item.team_brief_info.cur_people_num,
+            created_time: item.team_brief_info.created_time,
+            leader_info: item.team_brief_info.leader_info // assuming you also want the leader info
+          }
+        })
+        teams.value = fetched_teams
+      } else {
+        console.error('Error with response:', resp.status_msg)
+      }
+    },
+    error: function (error) {
+      console.error('Error fetching teams:', error)
+    }
+  })
+}
+getTeamList()
+
+const nextPage = () => {
+  if (currentPage.value < totalPage.value) {
+    currentPage.value += 1
+  }
+}
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value -= 1
+  }
+}
+watch(currentPage, getTeamList)
 </script>
 
 <style scoped>

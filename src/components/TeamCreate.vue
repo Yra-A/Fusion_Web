@@ -84,7 +84,7 @@
           Use a permanent address where you can receive mail.
         </p> -->
 
-        <RichText @update-content="description_update" />
+        <RichText :description="description" @update-content="description_update" />
         <div class="error-message mt-2 ml-1">{{ error_message }}</div>
       </div>
     </div>
@@ -93,7 +93,6 @@
       <button
         type="submit"
         class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-transform transform active:scale-90"
-        @click="submitTeamCreate"
       >
         提交
       </button>
@@ -103,12 +102,45 @@
 
 <script setup>
 import RichText from './RichText.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import $ from 'jquery'
+import { server_url, team_create_url } from '../constants/constants'
+import { useStore } from 'vuex'
 
-const description = ref('')
+const store = useStore()
+
+const props = defineProps({
+  initial_team_info: {
+    type: Object,
+    default: () => {
+      return {
+        team_id: 0,
+        title: '',
+        goal: '',
+        description: ''
+      }
+    }
+  }
+})
+
 const error_message = ref('')
 const team_title = ref('')
 const team_goal = ref('')
+const description = ref('')
+
+team_title.value = props.initial_team_info.title
+team_goal.value = props.initial_team_info.goal
+description.value = props.initial_team_info.description
+
+// watch(
+//   props.initial_team_info,
+//   (newVal) => {
+//     ;(team_title.value = newVal.title),
+//       (team_goal.value = newVal.goal),
+//       (description.value = newVal.description)
+//   },
+//   { immediate: true, deep: true }
+// )
 
 const description_update = (content) => {
   description.value = content
@@ -128,6 +160,26 @@ const submitTeamCreate = () => {
     error_message.value = '队伍介绍不能为空'
     return
   }
+  $.ajax({
+    url: `${server_url}${team_create_url}`,
+    type: 'POST',
+    data: {
+      user_id: store.state.user.user_id,
+      team_id: props.initial_team_info.team_id,
+      title: team_title.value,
+      goal: team_goal.value,
+      description: description.value
+    },
+    headers: {
+      Authorization: `Bearer ${store.state.user.token}`
+    },
+    success: function (resp) {
+      console.log(resp)
+    },
+    error: function (error) {
+      console.error('Error fetching teams:', error)
+    }
+  })
 }
 </script>
 

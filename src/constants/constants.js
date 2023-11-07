@@ -12,7 +12,16 @@ const contest_info_url = '/contest/info'
 
 const article_list_url = '/article/list'
 
-const team_list_url = '/team/list'
+const get_team_list_url = (contest_id) => {
+  return `/contest/${contest_id}/team/list`
+}
+const team_create_url = '/team/create'
+const get_team_info_url = (contest_id, team_id) => {
+  return `/contest/${contest_id}/team/info/${team_id}`
+}
+const team_application_list_url = '/team/manage/list'
+const team_application_submit_url = '/team/application/submit'
+const team_manage_action_url = '/team/manage/action'
 
 const get_user_profile_url = (user_id) => {
   return `/user/profile/${user_id}`
@@ -40,12 +49,17 @@ export {
   web_url,
   web_contest_url,
   article_list_url,
-  team_list_url,
+  get_team_list_url,
   user_info_upload_url,
   get_user_profile_url,
   user_profile_upload_url,
   web_user_profile_url,
   web_user_profile_upload_url,
   utils_upload_img_url,
-  web_user_profile_upload_relative_url
+  web_user_profile_upload_relative_url,
+  team_create_url,
+  get_team_info_url,
+  team_application_list_url,
+  team_application_submit_url,
+  team_manage_action_url
 }

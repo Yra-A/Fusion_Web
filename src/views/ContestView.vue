@@ -6,9 +6,18 @@
     <!-- Content -->
     <div class="flex mx-auto mt-4 justify-center">
       <!-- Left Side - contest info -->
+
       <div
         class="sm:h-[85vh] sm:overflow-y-scroll min-w-[500px] content-cen w-80 bg-white p-8 pt-5 rounded shadow-xl"
       >
+        <!-- 返回按钮 -->
+        <router-link
+          :to="{ name: 'home' }"
+          class="flex justify-start hover:cursor-pointer transition-transform transform active:scale-90 mb-2"
+        >
+          <img src="../assets/img/back.svg" class="h-6 w-6" />
+          <span class="text-base">返回</span>
+        </router-link>
         <!-- 新增的图片展示部分 -->
         <div
           class="mb-6 rounded overflow-hidden hover:scale-105 transform transition duration-300 ease-in-out flex justify-center"
