@@ -173,7 +173,7 @@ export default {
         url: `${server_url}${user_profile_url}`,
         type: 'GET',
         headers: {
-          Authorization: `Bearer 2f68dbbf-519d-4f01-9636-e2421b68f379`
+          Authorization: `Bearer ${store.state.user.token}`
         },
         success: function (resp) {
           user_profile_info.value.mobilePhone = resp.user_profile_info.user_info.mobile_phone
