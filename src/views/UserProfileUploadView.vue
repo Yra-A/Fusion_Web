@@ -172,7 +172,9 @@ export default {
       $.ajax({
         url: `${server_url}${user_profile_url}`,
         type: 'GET',
-        headers: { Authorization: `Bearer ${store.state.user.token}` },
+        headers: {
+          Authorization: `Bearer ${store.state.user.token}`
+        },
         success: function (resp) {
           user_profile_info.value.mobilePhone = resp.user_profile_info.user_info.mobile_phone
           user_profile_info.value.qqNumber = resp.user_profile_info.qq_number
