@@ -1,5 +1,9 @@
 <template>
-  <vue3-tinymce v-model="content" :setting="setting" script-src="/public/tinymce/tinymce.min.js" />
+  <vue3-tinymce
+    v-model="content"
+    :setting="setting"
+    script-src="../../../public/tinymce/tinymce.min.js"
+  />
 </template>
   
   <script setup>
@@ -41,7 +45,7 @@ const setting = {
 
   // 以中文简体为例
   language: 'zh-Hans',
-  language_url: '/public/tinymce/langs/zh-Hans.js'
+  language_url: '../../../public/tinymce/langs/zh-Hans.js'
 }
 
 const content = ref('')
