@@ -31,7 +31,7 @@
               v-model="keyword"
               type="text"
               class="w-full border rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
-              placeholder="搜索..."
+              placeholder="搜索标题..."
             />
             <button
               @click="getContests"
