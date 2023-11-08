@@ -84,8 +84,11 @@
                       </li>
 
                       <li>
-                        <a
-                          :href="web_user_profile_url"
+                        <router-link
+                          :to="{
+                            name: 'userprofile',
+                            params: { user_id: store.state.user.user_info.user_id }
+                          }"
                           class="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-700"
                         >
                           <svg
@@ -103,8 +106,8 @@
                             />
                           </svg>
 
-                          <span class="text-sm font-medium"> Profile </span>
-                        </a>
+                          <span class="text-sm font-medium">Profile</span>
+                        </router-link>
                       </li>
 
                       <li>
@@ -226,6 +229,7 @@
 
 <script>
 import { useStore } from 'vuex'
+
 import { web_user_profile_url } from '../constants/constants'
 export default {
   setup() {
@@ -237,7 +241,8 @@ export default {
 
     return {
       logout,
-      web_user_profile_url
+      web_user_profile_url,
+      store
     }
   }
 }

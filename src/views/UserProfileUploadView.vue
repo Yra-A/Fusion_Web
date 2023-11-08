@@ -116,13 +116,17 @@
     </div>
 
     <div class="mt-6 flex items-center justify-end gap-x-6 pr-60">
-      <a
+      <router-link
         type="button"
         class="text-sm font-semibold leading-6 text-gray-900"
-        :href="web_user_profile_url"
+        :to="{
+          name: 'userprofile',
+          params: { user_id: store.state.user.user_info.user_id }
+        }"
       >
         Cancel
-      </a>
+      </router-link>
+
       <button
         type="submit"
         class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

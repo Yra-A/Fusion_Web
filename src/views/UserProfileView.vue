@@ -9,13 +9,13 @@
           </div>
         </div>
         <div class="h-32 rounded-lg pt-10">
-          <a
+          <router-link
             v-if="isCurrentUser"
             class="inline-block rounded border border-current px-10 py-3 text-xl font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-indigo-500"
-            :href="web_user_profile_upload_url"
+            :to="{ name: 'userprofileupload' }"
           >
             编辑
-          </a>
+          </router-link>
         </div>
       </div>
 
