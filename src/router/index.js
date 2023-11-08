@@ -63,11 +63,11 @@ const router = createRouter({
       path: '/404/',
       name: '404',
       component: NotFoundView
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/404/'
     }
-    // {
-    //   path: '/:catchAll(.*)',
-    //   redirect: '/404/'
-    // }
   ]
 })
 
