@@ -9,12 +9,13 @@
           </div>
         </div>
         <div class="h-32 rounded-lg pt-10">
-          <a
+          <router-link
+            v-if="isCurrentUser"
             class="inline-block rounded border border-current px-10 py-3 text-xl font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-indigo-500"
-            :href="web_user_profile_upload_url"
+            :to="{ name: 'userprofileupload' }"
           >
             编辑
-          </a>
+          </router-link>
         </div>
       </div>
 
@@ -45,13 +46,19 @@
           </div>
 
           <div class="text-center">
-            <input type="file" id="avatarUpload" @change="avatarUpload" class="sr-only" />
+            <input
+              v-if="isCurrentUser"
+              type="file"
+              id="avatarUpload"
+              @change="avatarUpload"
+              class="sr-only"
+            />
             <label for="avatarUpload" class="cursor-pointer">
               <div class="avatar">
                 <a class="group relative block bg-black">
                   <img
                     alt="Developer"
-                    :src="$store.state.user.user_info.avatar_url"
+                    :src="avatar_url"
                     class="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50"
                   />
 
@@ -60,7 +67,10 @@
                       <div
                         class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100 pb-20"
                       >
-                        <p class="text-sm text-white">点击上传头像</p>
+                        <div class="text-sm text-white">
+                          <p class="ml-10 mr-10"></p>
+                          <p v-if="isCurrentUser">点击上传头像</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -95,14 +105,15 @@
 <script>
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import $ from 'jquery'
 import NavBar from '../components/NavBar.vue'
 import {
   server_url,
   get_user_profile_url,
   web_user_profile_upload_url,
-  web_user_profile_upload_relative_url
+  web_user_profile_upload_relative_url,
+  user_profile_upload_url
 } from '../constants/constants'
 export default {
   name: 'UserProfileView',
@@ -113,6 +124,7 @@ export default {
     const router = useRouter()
     const store = useStore()
     const realname = ref('')
+    const user_id = ref('')
     const enrolment_year = ref('')
     const college = ref('')
     const mobile_phone = ref('')
@@ -122,7 +134,9 @@ export default {
     const introduction = ref('')
     const honors = ref('')
     const images = ref('')
-    const has_profile = ref(false)
+    const has_profile = ref(' ')
+    const avatar_url = ref('')
+
     const user_profile_url = get_user_profile_url(store.state.user.user_info.user_id)
 
     const getUserProfileInfo = () => {
@@ -145,13 +159,16 @@ export default {
           introduction.value = resp.user_profile_info.introduction
           honors.value = resp.user_profile_info.honors
           images.value = resp.user_profile_info.images
+          avatar_url.value = resp.user_profile_info.user_info.avatar_url
           has_profile.value = resp.user_profile_info.user_info.has_profile
+          user_id.value = resp.user_profile_info.user_info.user_id
         },
         error: function (xhr, status, error) {
           console.error(error)
         }
       })
     }
+    getUserProfileInfo()
 
     if (!has_profile.value) {
       router.push(web_user_profile_upload_relative_url) // 将用户重定向到创建profile的页面
@@ -168,7 +185,7 @@ export default {
 
       // 使用 $.ajax 发送请求
       $.ajax({
-        url: 'https://mock.apifox.com/m1/3429271-0-default/utils/upload/img', // 替换为你的服务器端点
+        url: `${server_url}${user_profile_upload_url}`, // 替换为你的服务器端点
         type: 'POST',
         data: formData,
         processData: false, // 告诉jQuery不要处理发送的数据
@@ -182,9 +199,10 @@ export default {
       })
     }
 
-    getUserProfileInfo()
+    const isCurrentUser = computed(() => {
+      return user_id.value === store.state.user.user_info.user_id
+    })
 
-    console.log(realname.value)
     return {
       realname,
       enrolment_year,
@@ -196,14 +214,18 @@ export default {
       introduction,
       honors,
       images,
+      user_id,
       getUserProfileInfo,
       server_url,
       web_user_profile_upload_url,
       avatarUpload,
       user_profile_url,
+      user_profile_upload_url,
       store,
       has_profile,
-      web_user_profile_upload_relative_url
+      web_user_profile_upload_relative_url,
+      avatar_url,
+      isCurrentUser
       //token
     }
   }
