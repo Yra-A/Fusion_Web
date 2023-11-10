@@ -102,7 +102,7 @@
 
 <script setup>
 import RichText from './RichText.vue'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import $ from 'jquery'
 import { server_url, team_create_url } from '../constants/constants'
 import { useStore } from 'vuex'
@@ -115,6 +115,7 @@ const props = defineProps({
     default: () => {
       return {
         team_id: 0,
+        contest_id: 0,
         title: '',
         goal: '',
         description: ''
@@ -166,6 +167,7 @@ const submitTeamCreate = () => {
     data: {
       user_id: store.state.user.user_id,
       team_id: props.initial_team_info.team_id,
+      contest_id: props.initial_team_info.contest_id,
       title: team_title.value,
       goal: team_goal.value,
       description: description.value
