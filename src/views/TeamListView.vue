@@ -295,7 +295,7 @@
 
         <!-- 创建队伍部分 -->
         <div class="sm:overflow-y-scroll">
-          <TeamCreate />
+          <TeamCreate :initial_team_info="cur_team_info" />
         </div>
       </div>
     </div>
@@ -366,6 +366,14 @@ const teams = ref([
   }
 ])
 
+const cur_team_info = reactive({
+  team_id: 0,
+  contest_id: contest_id,
+  title: '',
+  goal: '',
+  description: ''
+})
+
 const formattedCreatedTime = (created_time) => {
   if (!created_time) {
     return '' // 或其他默认值
@@ -412,6 +420,7 @@ const getTeamList = () => {
         const fetched_teams = resp.team_list.map((item) => {
           return {
             team_id: item.team_brief_info.team_id,
+            contest_id: item.team_brief_info.contest_id,
             title: item.team_brief_info.title,
             goal: item.team_brief_info.goal,
             cur_people_num: item.team_brief_info.cur_people_num,

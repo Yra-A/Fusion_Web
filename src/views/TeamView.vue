@@ -440,6 +440,7 @@ const team = reactive({
   ],
   team_brief_info: {
     team_id: 0,
+    contest_id: 0,
     title: '',
     goal: '',
     cur_people_num: 0,
@@ -497,6 +498,7 @@ get_team_info()
 
 const cur_team_info = reactive({
   team_id: team.team_brief_info.team_id,
+  contest_id: team.team_brief_info.contest_id,
   title: team.team_brief_info.title,
   goal: team.team_brief_info.goal,
   description: team.description
@@ -506,6 +508,7 @@ watch(
   team,
   (newVal) => {
     cur_team_info.team_id = newVal.team_brief_info.team_id
+    cur_team_info.contest_id = newVal.team_brief_info.contest_id
     ;(cur_team_info.title = newVal.team_brief_info.title),
       (cur_team_info.goal = newVal.team_brief_info.goal),
       (cur_team_info.description = newVal.description)
