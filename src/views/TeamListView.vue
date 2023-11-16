@@ -419,13 +419,13 @@ const getTeamList = () => {
         totalPage.value = Math.ceil(resp.total / limit)
         const fetched_teams = resp.team_list.map((item) => {
           return {
-            team_id: item.team_brief_info.team_id,
-            contest_id: item.team_brief_info.contest_id,
-            title: item.team_brief_info.title,
-            goal: item.team_brief_info.goal,
-            cur_people_num: item.team_brief_info.cur_people_num,
-            created_time: item.team_brief_info.created_time,
-            leader_info: item.team_brief_info.leader_info // assuming you also want the leader info
+            team_id: item.team_id,
+            contest_id: item.contest_id,
+            title: item.title,
+            goal: item.goal,
+            cur_people_num: item.cur_people_num,
+            created_time: item.created_time,
+            leader_info: item.leader_info // assuming you also want the leader info
           }
         })
         teams.value = fetched_teams
