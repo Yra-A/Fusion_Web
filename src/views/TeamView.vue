@@ -249,7 +249,7 @@
             <div
               class="hs-accordion shadow rounded-lg"
               v-for="member in team.members"
-              :key="member.member_info.user_id"
+              :key="member.user_id"
             >
               <button
                 class="hs-accordion-toggle hs-accordion-active:text-blue-600 group pt-3 px-4 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400 rounded"
@@ -259,19 +259,19 @@
                     v-if="role == 1 || role == 2"
                     :to="{
                       name: 'userprofile',
-                      params: { user_id: member.member_info.user_id }
+                      params: { user_id: member.user_id }
                     }"
                     target="_blank"
                   >
                     <img
-                      :src="member.member_info.avatar_url"
+                      :src="member.avatar_url"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
                       @click.stop
                     />
                   </router-link>
                   <div v-else>
                     <img
-                      :src="member.member_info.avatar_url"
+                      :src="member.avatar_url"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
                       @click.stop
                     />
@@ -279,10 +279,10 @@
                   <div class="ml-5 flex flex-col">
                     <div>
                       <span class="font-semibold text-base align-middle">
-                        {{ member.member_info.nickname }}
+                        {{ member.nickname }}
                       </span>
                       <img
-                        v-if="member.member_info.gender == 1"
+                        v-if="member.gender == 1"
                         src="../assets/img/male.svg"
                         class="inline-block ml-1 h-4 w-4 align-middle"
                       />
@@ -294,8 +294,7 @@
                       />
                     </div>
                     <span class="text-xs block">
-                      {{ member.member_info.enrollment_year }} 级 •
-                      {{ member.member_info.college }}</span
+                      {{ member.enrollment_year }} 级 • {{ member.college }}</span
                     >
                   </div>
                 </div>
@@ -335,7 +334,7 @@
               >
                 <p
                   class="text-gray-800 font-medium text-sm flex items-center"
-                  v-for="honor in member.member_info.honors"
+                  v-for="honor in member.honors"
                   :key="honor.id"
                 >
                   <img src="../assets/img/honor.svg" alt="goal" class="h-6 w-6 mr-3" />
@@ -426,16 +425,14 @@ const team = reactive({
   description: '',
   members: [
     {
-      member_info: {
-        user_id: 1,
-        nickname: 'Yra',
-        college: '信息机电与工程学院',
-        avatar_url:
-          'https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231014112932422.png',
-        gender: 1,
-        enrollment_year: 2021,
-        honors: ['全国大学生睡觉竞赛冠军', '国际大学生摆烂竞赛冠军', '专业打游戏 8 级', '啥都不会']
-      }
+      user_id: 1,
+      nickname: 'Yra',
+      college: '信息机电与工程学院',
+      avatar_url:
+        'https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231014112932422.png',
+      gender: 1,
+      enrollment_year: 2021,
+      honors: ['全国大学生睡觉竞赛冠军', '国际大学生摆烂竞赛冠军', '专业打游戏 8 级', '啥都不会']
     }
   ],
   team_brief_info: {
@@ -483,7 +480,7 @@ const get_team_info = () => {
           role.value = 2
         } else {
           for (let i = 0; i < resp.team_info.members.length; i++) {
-            if (resp.team_info.members[i].member_info.user_id == user_id) {
+            if (resp.team_info.members[i].user_id == user_id) {
               role.value = 1
               break
             }
@@ -532,18 +529,18 @@ const get_team_application_list = () => {
       if (resp.status_code === 0) {
         const fetched_applications = resp.application_list.map((item) => {
           return {
-            team_id: item.team_application.team_id,
-            reason: item.team_application.reason,
-            application_id: item.team_application.application_id,
-            created_time: item.team_application.created_time,
-            application_type: item.team_application.application_type,
+            team_id: item.team_id,
+            reason: item.reason,
+            application_id: item.application_id,
+            created_time: item.created_time,
+            application_type: item.application_type,
             member_info: {
-              user_id: item.team_application.member_info.user_id,
-              nickname: item.team_application.member_info.nickname,
-              college: item.team_application.member_info.college,
-              avatar_url: item.team_application.member_info.avatar_url,
-              gender: item.team_application.member_info.gender,
-              enrollment_year: item.team_application.member_info.enrollment_year
+              user_id: item.member_info.user_id,
+              nickname: item.member_info.nickname,
+              college: item.member_info.college,
+              avatar_url: item.member_info.avatar_url,
+              gender: item.member_info.gender,
+              enrollment_year: item.member_info.enrollment_year
             }
           }
         })
