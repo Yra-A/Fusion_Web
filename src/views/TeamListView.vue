@@ -9,14 +9,33 @@
       <div
         class="sm:h-[85vh] sm:overflow-y-scroll min-w-[500px] content-cen w-80 bg-white p-8 pt-5 rounded shadow-xl"
       >
-        <!-- 返回按钮 -->
-        <router-link
-          :to="{ name: 'home' }"
-          class="flex justify-start hover:cursor-pointer transition-transform transform active:scale-90 mb-2"
-        >
-          <img src="../assets/img/back.svg" class="h-6 w-6" />
-          <span class="text-base">返回</span>
-        </router-link>
+        <div class="flex justify-between items-center">
+          <!-- 返回按钮 -->
+          <router-link
+            :to="{ name: 'home' }"
+            class="flex justify-start hover:cursor-pointer transition-transform transform active:scale-90 pt-2 mb-2"
+          >
+            <img src="../assets/img/back.svg" class="h-6 w-6" />
+            <span class="text-base">返回</span>
+          </router-link>
+
+          <div
+            class="justify-end hover:cursor-pointer transition-transform transform active:scale-90"
+            @click="favor_contest"
+          >
+            <div
+              v-if="!$store.state.user.is_login || !contest.is_favorite"
+              class="flex items-center gap-1.5"
+            >
+              <img src="../assets/img/not_favor.svg" class="h-6 w-6" />
+              <span class="text-base w-12">收藏</span>
+            </div>
+            <div v-else class="flex items-center gap-1.5">
+              <img src="../assets/img/is_favor.svg" class="h-6 w-6" />
+              <span class="text-base w-12">已收藏</span>
+            </div>
+          </div>
+        </div>
         <!-- 新增的图片展示部分 -->
         <div
           class="mb-6 rounded overflow-hidden hover:scale-105 transform transition duration-300 ease-in-out flex justify-center"
@@ -305,7 +324,12 @@
 <script setup>
 import NavBar from '../components/NavBar.vue'
 import $ from 'jquery'
-import { server_url, contest_info_url, get_team_list_url } from '../constants/constants'
+import {
+  server_url,
+  contest_info_url,
+  get_team_list_url,
+  favorite_contest_action_url
+} from '../constants/constants'
 import { ref, reactive, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TeamCard from '../components/TeamCard.vue'
@@ -341,7 +365,8 @@ const contest = reactive({
     official_website: '',
     additional_info: ''
   },
-  created_time: 0
+  created_time: 0,
+  is_favorite: false
 })
 const currentPage = ref(1)
 const totalPage = ref(0)
@@ -456,6 +481,65 @@ const prevPage = () => {
   }
 }
 watch(currentPage, getTeamList)
+
+const favor_contest = () => {
+  if (store.state.user.is_login == false) {
+    show_alert_login()
+    contest.is_favorite = false
+  } else {
+    if (contest.is_favorite) {
+      $.ajax({
+        url: `${server_url}${favorite_contest_action_url}`,
+        type: 'POST',
+        data: {
+          user_id: store.state.user.user_info.user_id,
+          contest_id: contest.contest_id,
+          action_type: 2
+        },
+        headers: {
+          Authorization: `Bearer ${store.state.user.token}`
+        },
+        success: function (resp) {
+          if (resp.status_code == 0) {
+            contest.is_favorite = false
+          } else {
+            alert(resp.status_msg)
+          }
+        },
+        error: function (error) {
+          alert(error)
+        }
+      })
+    } else {
+      $.ajax({
+        url: `${server_url}${favorite_contest_action_url}`,
+        type: 'POST',
+        data: {
+          user_id: store.state.user.user_info.user_id,
+          contest_id: contest.contest_id,
+          action_type: 1
+        },
+        headers: {
+          Authorization: `Bearer ${store.state.user.token}`
+        },
+        success: function (resp) {
+          if (resp.status_code == 0) {
+            contest.is_favorite = true
+          } else {
+            alert(resp.status_msg)
+          }
+        },
+        error: function (error) {
+          console.error('Error favoring contest:', error)
+        }
+      })
+    }
+  }
+}
+
+const show_alert_login = () => {
+  alert('请先登录，再使用此功能')
+}
 </script>
 
 <style scoped>

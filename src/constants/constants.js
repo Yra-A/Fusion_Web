@@ -28,6 +28,7 @@ const get_user_profile_url = (user_id) => {
 }
 
 const favorite_contest_action_url = '/favorite/contest/action'
+const favorite_contest_list_url = '/favorite/contest/list'
 
 const user_profile_upload_url = '/user/profile/upload'
 
@@ -64,5 +65,6 @@ export {
   team_application_list_url,
   team_application_submit_url,
   team_manage_action_url,
-  favorite_contest_action_url
+  favorite_contest_action_url,
+  favorite_contest_list_url
 }

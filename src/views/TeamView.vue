@@ -555,6 +555,10 @@ const get_team_application_list = () => {
 const join_reason = ref('')
 
 const submit_join_application = () => {
+  if (!store.state.user.user_info.has_profile) {
+    alert('申请入队前请先完善个人信息~')
+    return
+  }
   $.ajax({
     url: `${server_url}${team_application_submit_url}`,
     type: 'POST',

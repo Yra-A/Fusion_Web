@@ -162,7 +162,7 @@ export default {
       qq_Number: '',
       wechat_Number: '',
       introduction: '',
-      honors: '',
+      honors: [],
       has_profile: false,
       imageFile: null
     })
@@ -205,7 +205,13 @@ export default {
         success: function (response) {
           // 处理成功的响应
           console.log(response)
-          window.location.href = web_user_profile_url
+          store.dispatch('get_user_info', {
+            user_id: store.state.user.user_info.user_id,
+            token: store.state.user.token,
+            success: () => {
+              window.location.href = web_user_profile_url
+            }
+          })
         },
         error: function (xhr, status, error) {
           // 处理错误
