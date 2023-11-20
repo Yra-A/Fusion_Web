@@ -1,7 +1,9 @@
 <template>
   <div
     class="min-h-screen flex justify-center items-center bg-cover bg-center bg-no-repeat"
-    style="background-image: url('/src/assets/img/404-background.png')"
+    style="
+      background-image: url('https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/404-background.png');
+    "
   >
     <div class="bg-white bg-opacity-80 p-20 rounded-lg">
       <div class="text-center">
