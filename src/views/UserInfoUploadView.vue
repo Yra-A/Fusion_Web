@@ -164,7 +164,7 @@ export default {
     let college = ref('')
     let qqAccount = ref('')
     let weChatAccount = ref('')
-    let enrollmentYear = ref('')
+    let enrollmentYear = ref(0)
     let error_message = ref('')
 
     let checkoutUserInfo = () => {
@@ -208,7 +208,7 @@ export default {
             college: college.value,
             nickname: nickname.value,
             realname: realname.value,
-            hasProfile: false
+            has_profile: false
           },
           success() {
             router.push({ name: 'home' })

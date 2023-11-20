@@ -57,10 +57,15 @@
         </div>
 
         <!--所属领域-->
-        <span class="flex flex-col items-center block mb-8">
+        <span class="flex flex-col items-center mb-8">
           <span class="text-lg text-center font-medium block mb-2 w-full">『所属领域』</span>
-          <div v-for="field in fields" :key="field.id" class="form-control w-3/4 ml-2">
-            <label class="label cursor-pointer">
+          <div class="form-control w-3/4 ml-2">
+            <label
+              v-for="field in fields"
+              :key="field.id"
+              class="label cursor-pointer"
+              @click="is_favor = false"
+            >
               <span class="label-text text-base font-medium">{{ field.name }}</span>
               <input type="checkbox" v-model="field.selected" :class="field.styles" />
             </label>
@@ -68,16 +73,31 @@
         </span>
 
         <!--参赛形式-->
-        <span class="flex flex-col items-center block mb-4">
+        <span class="flex flex-col items-center mb-8">
           <span class="text-lg text-center font-medium block mb-2 w-full">『参赛形式』</span>
           <div class="form-control w-3/4 ml-2">
             <label
               v-for="format in competition_formats"
               :key="format.id"
               class="label cursor-pointer"
+              @click="is_favor = false"
             >
               <span class="label-text text-base font-medium">{{ format.name }}</span>
               <input type="checkbox" v-model="format.selected" :class="format.styles" />
+            </label>
+          </div>
+        </span>
+
+        <!--收藏项-->
+        <span class="flex flex-col items-center mb-8">
+          <span class="text-lg text-center font-medium block mb-2 w-full">『你的收藏』</span>
+          <div class="form-control w-3/4 ml-2">
+            <label
+              class="label hover:cursor-pointer transition-transform transform active:scale-95"
+              @click="getMyFavorContest"
+            >
+              <span class="label-text text-base font-medium">点击查看</span>
+              <img src="../assets/img/is_favor.svg" class="w-5 h-5" />
             </label>
           </div>
         </span>
@@ -92,7 +112,8 @@
         style="min-width: 700px"
       >
         <div class="block">
-          <h3 class="float-left text-3xl ml-4 font-semibold mb-4">赛事板块 🚀</h3>
+          <h3 v-if="!is_favor" class="float-left text-3xl ml-4 font-semibold mb-4">赛事板块 🚀</h3>
+          <h3 v-else class="float-left text-3xl ml-4 font-semibold mb-4">已收藏的赛事板块 ❤️</h3>
           <!-- Pagination -->
           <div class="float-right inline-flex items-center justify-center gap-4">
             <!-- Previous Page Button -->
@@ -170,8 +191,14 @@
 import NavBar from '../components/NavBar.vue'
 import ContestCard from '../components/ContestCard.vue'
 import { ref, computed, watch } from 'vue'
-import { contest_list_url, server_url, web_contest_url } from '../constants/constants.js'
+import {
+  contest_list_url,
+  server_url,
+  web_contest_url,
+  favorite_contest_list_url
+} from '../constants/constants.js'
 import $ from 'jquery'
+import { useStore } from 'vuex'
 
 export default {
   components: {
@@ -257,6 +284,8 @@ export default {
     const currentPage = ref(1)
     const totalPage = ref(0)
     const limit = 10 // 每页显示的数量
+    const store = useStore()
+    const is_favor = ref(false)
 
     // 计算属性，用于判断是否有至少一个复选框被选中
     const anyCheckboxSelected = computed(() => {
@@ -269,10 +298,15 @@ export default {
     const clearSelections = () => {
       fields.value.forEach((field) => (field.selected = false))
       competition_formats.value.forEach((format) => (format.selected = false))
+      is_favor.value = false
     }
 
     // 按条件获取赛事板块
     const getContests = () => {
+      if (is_favor.value == true) {
+        getMyFavorContest()
+        return
+      }
       let selected_fields = fields.value.filter((field) => field.selected).map((field) => field.id)
       let selected_formats = competition_formats.value
         .filter((format) => format.selected)
@@ -329,6 +363,46 @@ export default {
     watch(competition_formats, getContests, { deep: true })
     watch(currentPage, getContests)
 
+    const getMyFavorContest = () => {
+      if (store.state.user.is_login == false) {
+        alert('查看收藏前请先登录~')
+        return
+      }
+      is_favor.value = true
+      $.ajax({
+        url: `${server_url}${favorite_contest_list_url}`,
+        type: 'GET',
+        data: {
+          user_id: store.state.user.user_id,
+          limit: limit,
+          offset: (currentPage.value - 1) * limit
+        },
+        headers: {
+          Authorization: `Bearer ${store.state.user.token}`
+        },
+        success: function (resp) {
+          if (resp.status_code == 0) {
+            const fetched_contests = resp.contest_list.map((item) => {
+              return {
+                contest_id: item.contest_brief_info.contest_id,
+                title: item.contest_brief_info.title,
+                field: item.contest_brief_info.field,
+                format: item.contest_brief_info.format,
+                created_time: item.contest_brief_info.created_time,
+                description: item.contest_brief_info.description
+              }
+            })
+            contests.value = fetched_contests
+          } else {
+            alert(resp)
+          }
+        },
+        error: function (error) {
+          alert(error)
+        }
+      })
+    }
+
     return {
       keyword,
       fields,
@@ -341,7 +415,9 @@ export default {
       totalPage,
       nextPage,
       prevPage,
-      web_contest_url
+      web_contest_url,
+      getMyFavorContest,
+      is_favor
     }
   }
 }

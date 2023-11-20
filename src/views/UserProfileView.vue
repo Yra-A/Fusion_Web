@@ -20,11 +20,9 @@
       </div>
 
       <div class="mx-auto pt-10 px-5 md:px-20 rounded-lg bg-white w-full md:w-2/3 h-4/5 shadow-xl">
-        <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
-          基础信息
-        </h1>
+        <h1 class="text-2xl font-bold border-b-2 border-gray-30 inline-block pt-10">基础信息</h1>
         <!-- Resume content -->
-        <div class="grid grid-cols-3 gap-2 pt-5">
+        <div class="grid grid-cols-3 gap-2">
           <div>
             <p class="infotemplate pt-5">真实姓名</p>
             <p class="">{{ realname }}</p>
@@ -81,21 +79,14 @@
         </div>
 
         <div>
-          <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
-            个人介绍
-          </h1>
-          <p class="pt-10">{{ introduction }}</p>
+          <h1 class="text-2xl font-bold border-b-2 border-gray-30 inline-block pt-10">个人介绍</h1>
+          <p class="pt-5">{{ introduction }}</p>
         </div>
-        <div>
-          <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">
-            荣誉列表
-          </h1>
-          <p class="pt-10">{{ honors }}</p>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold mb-2 border-b-2 border-gray-30 inline-block pt-10">img</h1>
-          <div class="pt-10">img</div>
-          <div class="pt-20"></div>
+        <div class="pb-20">
+          <h1 class="text-2xl font-bold border-b-2 border-gray-30 inline-block pt-10">荣誉列表</h1>
+          <ul class="pt-5">
+            <li v-for="(honor, index) in honors" :key="index">{{ honor }}</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -124,16 +115,15 @@ export default {
     const router = useRouter()
     const store = useStore()
     const realname = ref('')
-    const user_id = ref('')
-    const enrolment_year = ref('')
+    const user_id = ref(0)
+    const enrolment_year = ref(0)
     const college = ref('')
     const mobile_phone = ref('')
-    const gender = ref('')
+    const gender = ref(0)
     const qq_number = ref('')
     const wechat_number = ref('')
     const introduction = ref('')
-    const honors = ref('')
-    const images = ref('')
+    const honors = ref([])
     const has_profile = ref(' ')
     const avatar_url = ref('')
 
@@ -158,7 +148,6 @@ export default {
           wechat_number.value = resp.user_profile_info.wechat_number
           introduction.value = resp.user_profile_info.introduction
           honors.value = resp.user_profile_info.honors
-          images.value = resp.user_profile_info.images
           avatar_url.value = resp.user_profile_info.user_info.avatar_url
           has_profile.value = resp.user_profile_info.user_info.has_profile
           user_id.value = resp.user_profile_info.user_info.user_id
@@ -213,7 +202,6 @@ export default {
       wechat_number,
       introduction,
       honors,
-      images,
       user_id,
       getUserProfileInfo,
       server_url,
