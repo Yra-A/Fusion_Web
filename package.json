@@ -17,6 +17,7 @@
     "@heroicons/vue": "^2.0.18",
     "@jsdawn/vue3-tinymce": "^2.0.4",
     "@packy-tang/vue-tinymce": "^2.0.0-beta.1",
+    "@preline/remove-element": "^2.0.0",
     "@tinymce/tinymce-vue": "^5.1.1",
     "ant-design-vue": "^4.0.6",
     "jquery": "^3.7.1",

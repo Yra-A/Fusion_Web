@@ -27,6 +27,8 @@ const get_user_profile_url = (user_id) => {
   return `/user/profile/${user_id}`
 }
 
+const favorite_contest_action_url = '/favorite/contest/action'
+
 const user_profile_upload_url = '/user/profile/upload'
 
 const utils_upload_img_url = '/fusion/utils/upload/img'
@@ -61,5 +63,6 @@ export {
   get_team_info_url,
   team_application_list_url,
   team_application_submit_url,
-  team_manage_action_url
+  team_manage_action_url,
+  favorite_contest_action_url
 }

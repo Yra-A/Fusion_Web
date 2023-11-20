@@ -402,6 +402,11 @@ const getContestInfo = () => {
 getContestInfo()
 
 const getTeamList = () => {
+  if (!store.state.user.is_login) {
+    alert('请先登录，再使用团队功能')
+    return
+  }
+
   const team_list_url = get_team_list_url(contest_id)
 
   $.ajax({
