@@ -32,7 +32,7 @@ const favorite_contest_list_url = '/favorite/contest/list'
 
 const user_profile_upload_url = '/user/profile/upload'
 
-const utils_upload_img_url = '/fusion/utils/upload/img'
+const utils_upload_img_url = '/utils/upload/img'
 
 /* 前端 */
 const web_url = 'http://localhost:5173'

@@ -104,7 +104,8 @@ import {
   get_user_profile_url,
   web_user_profile_upload_url,
   web_user_profile_upload_relative_url,
-  user_profile_upload_url
+  user_profile_upload_url,
+  utils_upload_img_url
 } from '../constants/constants'
 export default {
   name: 'UserProfileView',
@@ -174,16 +175,30 @@ export default {
 
       // 使用 $.ajax 发送请求
       $.ajax({
-        url: `${server_url}${user_profile_upload_url}`, // 替换为你的服务器端点
+        url: `${server_url}${utils_upload_img_url}`, // 替换为你的服务器端点
         type: 'POST',
         data: formData,
         processData: false, // 告诉jQuery不要处理发送的数据
         contentType: false, // 告诉jQuery不要设置内容类型
         success: function (response) {
-          console.log('Upload successful.', response)
+          updateAvatarUrl(response.image_url)
         },
         error: function (xhr, status, error) {
           console.error('Upload failed:', error)
+        }
+      })
+    }
+
+    function updateAvatarUrl(image_url) {
+      $.ajax({
+        url: `${server_url}${user_profile_upload_url}`, // 替换为您的服务器端点
+        type: 'POST',
+        data: { avatar_url: image_url },
+        success: function (response) {
+          console.log('Avatar URL updated successfully', response)
+        },
+        error: function (xhr, status, error) {
+          console.error('Failed to update avatar URL:', error)
         }
       })
     }
@@ -213,7 +228,9 @@ export default {
       has_profile,
       web_user_profile_upload_relative_url,
       avatar_url,
-      isCurrentUser
+      isCurrentUser,
+      updateAvatarUrl,
+      utils_upload_img_url
       //token
     }
   }
