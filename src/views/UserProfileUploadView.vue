@@ -17,7 +17,7 @@
             <div class="mt-2">
               <input
                 type="text"
-                v-model="user_profile_info.mobilePhone"
+                v-model="user_profile_info.user_info.mobile_phone"
                 name="mobile_phone"
                 id="mobile_phone"
                 autocomplete="address-level2"
@@ -33,7 +33,7 @@
             <div class="mt-2">
               <input
                 type="text"
-                v-model="user_profile_info.qqNumber"
+                v-model="user_profile_info.qq_number"
                 name="qq_number"
                 id="qq_number"
                 autocomplete="address-level1"
@@ -49,7 +49,7 @@
             <div class="mt-2">
               <input
                 type="text"
-                v-model="user_profile_info.wechatNumber"
+                v-model="user_profile_info.wechat_number"
                 name="wechat_number"
                 id="wechat_number"
                 autocomplete="wechat_number"
@@ -88,29 +88,6 @@
             </div>
             <p class="mt-3 text-sm leading-6 text-gray-600">介绍一下自己曾获得的荣誉</p>
           </div>
-          <div class="col-span-full">
-            <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900"
-              >图片列表</label
-            >
-            <div
-              class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
-            >
-              <div class="text-center">
-                <PhotoIcon class="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
-                <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                  <label
-                    for="file-upload"
-                    class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                  >
-                    <span>Upload a file</span>
-                    <input id="file-upload" name="file-upload" type="file" class="sr-only" />
-                  </label>
-                  <p class="pl-1">or drag and drop</p>
-                </div>
-                <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -140,9 +117,8 @@
     
 <script >
 import { useStore } from 'vuex'
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import $ from 'jquery'
-import { PhotoIcon } from '@heroicons/vue/24/solid'
 import NavBar from '../components/NavBar.vue'
 import {
   server_url,
@@ -153,18 +129,25 @@ import {
 export default {
   name: 'UserProfileUploadView',
   components: {
-    NavBar,
-    PhotoIcon
+    NavBar
   },
   setup() {
-    const user_profile_info = ref({
-      mobilePhone: '',
-      qq_Number: '',
-      wechat_Number: '',
+    const user_profile_info = reactive({
       introduction: '',
-      honors: [],
-      has_profile: false,
-      imageFile: null
+      qq_number: '',
+      wechat_number: '',
+      honors: [''],
+      user_info: {
+        user_id: 0,
+        gender: 0,
+        enrollment_year: 0,
+        mobile_phone: '',
+        college: '',
+        nickname: '',
+        realname: '',
+        avatar_url: '',
+        has_profile: true
+      }
     })
 
     const store = useStore()
@@ -180,31 +163,38 @@ export default {
           Authorization: `Bearer ${store.state.user.token}`
         },
         success: function (resp) {
-          user_profile_info.value.mobilePhone = resp.user_profile_info.user_info.mobile_phone
-          user_profile_info.value.qqNumber = resp.user_profile_info.qq_number
-          user_profile_info.value.wechatNumber = resp.user_profile_info.wechat_number
-          user_profile_info.value.introduction = resp.user_profile_info.introduction
-          user_profile_info.value.honors = resp.user_profile_info.honors
-          user_profile_info.value.has_profile = true
+          if (resp.status_code == 0) {
+            Object.assign(user_profile_info, resp.user_profile_info)
+          } else {
+            alert(resp.status_msg)
+          }
         },
         error: function (xhr, status, error) {
-          console.error(error)
+          alert(error)
         }
       })
     }
 
     getUserProfileInfo()
 
-    const submitForm = async () => {
-      const url = `${server_url}${user_profile_upload_url}`
-
+    const submitForm = () => {
       $.ajax({
-        url: url,
+        url: `${server_url}${user_profile_upload_url}`,
         type: 'POST',
-        data: user_profile_info.value,
-        success: function (response) {
+        data: {
+          user_id: store.state.user.user_info.user_id,
+          user_profile_info: user_profile_info
+        },
+        headers: {
+          Authorization: `Bearer ${store.state.user.token}`
+        },
+        success: function (resp) {
           // 处理成功的响应
-          console.log(response)
+          console.log(resp)
+          if (resp.status_code != 0) {
+            alert(resp.status_msg)
+            return
+          }
           store.dispatch('get_user_info', {
             user_id: store.state.user.user_info.user_id,
             token: store.state.user.token,
@@ -215,7 +205,7 @@ export default {
         },
         error: function (xhr, status, error) {
           // 处理错误
-          console.error(error)
+          alert(error)
         }
       })
     }
