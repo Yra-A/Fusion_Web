@@ -281,6 +281,7 @@
               :title="article.title"
               :author="article.author"
               :created_time="article.created_time"
+              :link="article.link"
             ></ArticleCard>
           </div>
         </div>
@@ -350,7 +351,8 @@ export default {
         title: 'string',
         author_id: 0,
         author: 'string',
-        created_time: 0
+        created_time: 0,
+        link: ''
       }
     ])
 
@@ -407,7 +409,8 @@ export default {
                 title: item.article_brief_info.title,
                 author_id: item.article_brief_info.author_id,
                 author: item.article_brief_info.author,
-                created_time: item.article_brief_info.created_time
+                created_time: item.article_brief_info.created_time,
+                link: item.article_brief_info.link
               }
             })
             articles.value = fetched_articles

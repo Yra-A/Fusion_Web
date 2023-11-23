@@ -1,5 +1,9 @@
 <template>
-  <div class="card pl-4 pt-5 pb-2 pr-2 hover:shadow-md cursor-pointer transition duration-150">
+  <a
+    :href="link"
+    target="_blank"
+    class="card pl-4 pt-5 pb-2 pr-2 hover:shadow-md cursor-pointer transition duration-150"
+  >
     <!-- Title -->
     <h2 class="text-xl font-medium mb-2 flex">{{ title }}</h2>
 
@@ -9,7 +13,7 @@
       <div class="inline-block mx-2 h-4 bg-gray-300 w-px"></div>
       <span class="inline-block mr-2">发布时间：{{ formattedCreatedTime }}</span>
     </div>
-  </div>
+  </a>
 </template>
   
 <script>
@@ -26,6 +30,10 @@ export default {
     created_time: {
       type: Number,
       default: 0
+    },
+    link: {
+      type: String,
+      default: ''
     }
   },
   computed: {
