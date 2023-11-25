@@ -315,11 +315,11 @@ export default {
         url: `${server_url}${contest_list_url}`,
         type: 'GET',
         data: {
-          keyword: keyword.value,
           fields: selected_fields,
           formats: selected_formats,
           limit: limit,
-          offset: (currentPage.value - 1) * limit
+          offset: (currentPage.value - 1) * limit,
+          keyword: ''
         },
         success: function (resp) {
           if (resp.status_code === 0) {
