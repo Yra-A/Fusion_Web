@@ -373,7 +373,7 @@ export default {
         url: `${server_url}${favorite_contest_list_url}`,
         type: 'GET',
         data: {
-          user_id: store.state.user.user_id,
+          user_id: store.state.user.user_info.user_id,
           limit: limit,
           offset: (currentPage.value - 1) * limit
         },

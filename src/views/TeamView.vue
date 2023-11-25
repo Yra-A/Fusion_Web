@@ -338,7 +338,7 @@
                   :key="honor.id"
                 >
                   <img src="../assets/img/honor.svg" alt="goal" class="h-6 w-6 mr-3" />
-                  {{ honor }}
+                  <span class="pt-1">{{ honor }}</span>
                 </p>
               </div>
             </div>

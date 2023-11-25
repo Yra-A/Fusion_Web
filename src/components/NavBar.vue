@@ -23,11 +23,16 @@
                       class="group flex items-center justify-between rounded-lg px-2 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                     >
                       <img
-                        alt=""
+                        v-if="$store.state.user.user_info.avatar_url != ''"
                         :src="$store.state.user.user_info.avatar_url"
                         class="h-10 w-10 rounded-full object-cover"
                       />
-                      <p class="ms-2 text-left text-xs block mr-2 mb-0">
+                      <img
+                        v-else
+                        src="../assets/img/defaultAvatar.svg"
+                        class="h-10 w-10 rounded-full object-cover"
+                      />
+                      <p class="ms-2 text-left text-xs block mr-2 pb-1">
                         <span class="block font-medium text-base">
                           <span class="align-middle">{{
                             $store.state.user.user_info.nickname
