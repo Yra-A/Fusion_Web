@@ -563,9 +563,10 @@ const submit_join_application = () => {
     url: `${server_url}${team_application_submit_url}`,
     type: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${store.state.user.token}`
     },
-    data: {
+    data: JSON.stringify({
       team_id: team_id,
       reason: join_reason.value,
       application_type: 1,
@@ -578,7 +579,7 @@ const submit_join_application = () => {
         gender: store.state.user.gender,
         enrollment_year: store.state.user.enrollment_year
       }
-    },
+    }),
     success: function (resp) {
       if (resp.status_code == 0) {
         console.log('Application submitted:', resp.status_msg)
@@ -598,13 +599,14 @@ const accept_application = (application_id) => {
     url: `${server_url}${team_manage_action_url}`,
     type: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${store.state.user.token}`
     },
-    data: {
+    data: JSON.stringify({
       user_id: user_id,
       application_id: application_id,
       action_type: 1
-    },
+    }),
     success: function (resp) {
       if (resp.status_code == 0) {
         console.log('Application accepted:', resp.status_msg)
@@ -624,13 +626,14 @@ const reject_application = (application_id) => {
     url: `${server_url}${team_manage_action_url}`,
     type: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${store.state.user.token}`
     },
-    data: {
+    data: JSON.stringify({
       user_id: user_id,
       application_id: application_id,
       action_type: 2
-    },
+    }),
     success: function (resp) {
       if (resp.status_code == 0) {
         console.log('Application rejected:', resp.status_msg)

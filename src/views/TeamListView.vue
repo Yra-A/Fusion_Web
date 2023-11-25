@@ -491,12 +491,13 @@ const favor_contest = () => {
       $.ajax({
         url: `${server_url}${favorite_contest_action_url}`,
         type: 'POST',
-        data: {
+        data: JSON.stringify({
           user_id: store.state.user.user_info.user_id,
           contest_id: contest.contest_id,
           action_type: 2
-        },
+        }),
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${store.state.user.token}`
         },
         success: function (resp) {
@@ -514,12 +515,13 @@ const favor_contest = () => {
       $.ajax({
         url: `${server_url}${favorite_contest_action_url}`,
         type: 'POST',
-        data: {
+        data: JSON.stringify({
           user_id: store.state.user.user_info.user_id,
           contest_id: contest.contest_id,
           action_type: 1
-        },
+        }),
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${store.state.user.token}`
         },
         success: function (resp) {

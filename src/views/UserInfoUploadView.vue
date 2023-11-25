@@ -52,9 +52,9 @@
                   v-model="gender"
                   class="w-full px-4 py-3 rounded-lg mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 >
-                  <option value="" selected disabled hidden></option>
-                  <option value="男">男</option>
-                  <option value="女">女</option>
+                  <option value="0" selected disabled hidden></option>
+                  <option value="1">男</option>
+                  <option value="2">女</option>
                 </select>
               </div>
 
@@ -159,12 +159,12 @@ export default {
     // user info 内容
     let nickname = ref('')
     let realname = ref('')
-    let gender = ref(0)
+    let gender = ref('')
     let mobilePhone = ref('')
     let college = ref('')
     let qqAccount = ref('')
     let weChatAccount = ref('')
-    let enrollmentYear = ref(0)
+    let enrollmentYear = ref('')
     let error_message = ref('')
 
     let checkoutUserInfo = () => {
@@ -202,9 +202,9 @@ export default {
           token: store.state.user.token,
           user_info: {
             user_id: 0,
-            gender: gender.value,
-            enrollment_year: enrollmentYear.value,
-            mobile_phone: 'mobilePhone.value',
+            gender: parseInt(gender.value),
+            enrollment_year: parseInt(enrollmentYear.value),
+            mobile_phone: mobilePhone.value,
             college: college.value,
             nickname: nickname.value,
             realname: realname.value,

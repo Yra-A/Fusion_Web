@@ -1,6 +1,8 @@
 /* 后端接口 */
-const server_url = 'https://mock.apifox.cn/m1/3429271-0-default'
-const show_url = 'http://localhost:5173'
+// const server_url = 'https://mock.apifox.cn/m1/3429271-0-default'
+// const server_url = 'http://101.35.229.143:8888/fusion'
+const server_url = 'http://localhost:8888/fusion'
+const show_url = 'http://101.35.229.143:5173'
 
 const user_login_url = '/user/login'
 const user_register_url = '/user/register'
@@ -35,7 +37,7 @@ const user_profile_upload_url = '/user/profile/upload'
 const utils_upload_img_url = '/utils/upload/img'
 
 /* 前端 */
-const web_url = 'http://localhost:5173'
+const web_url = 'http://101.35.229.143:5173'
 const web_user_profile_upload_relative_url = '/user/profile/upload' //用来给route.push重定向的相对路径
 const web_contest_url = web_url + '/contest'
 const web_user_profile_url = web_url + '/user/profile/{user_id}'
