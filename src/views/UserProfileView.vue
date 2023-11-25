@@ -53,15 +53,15 @@
                 <img
                   v-if="user_profile_info.user_info.avatar_url != ''"
                   :src="user_profile_info.user_info.avatar_url"
-                  class="rounded-full min-w-[180px] w-[180px] object-cover transition-opacity"
+                  class="rounded-full w-[170px] h-[170px] object-cover transition-opacity"
                 />
                 <img
                   v-else
                   src="../assets/img/defaultAvatar.svg"
-                  class="rounded-full min-w-[180px] w-[180px] object-cover transition-opacity"
+                  class="rounded-full w-[170px] h-[170px] object-cover transition-opacity"
                 />
                 <div
-                  class="absolute inset-0 w-[180px] bg-black bg-opacity-0 flex items-center justify-center opacity-0 hover:bg-opacity-50 hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 w-[170px] bg-black bg-opacity-0 flex items-center justify-center opacity-0 hover:bg-opacity-50 hover:opacity-100 transition-opacity"
                 >
                   <p class="text-white">点击上传头像</p>
                 </div>
