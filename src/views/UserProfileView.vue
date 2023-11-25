@@ -1,17 +1,17 @@
 <template>
   <NavBar />
   <section>
-    <div class="min-h-screen w-full bg-gradient-to-b from-blue-400 to-transparent">
-      <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-        <div class="h-32 rounded-lg lg:col-span-2">
-          <div class="pt-10 pl-60 text-3xl font-blod text-white">
-            {{ $store.state.user.user_info.nickname }}的简历
-          </div>
+    <div class="min-h-screen min-w-[1400px] w-full bg-gradient-to-b from-blue-400 to-transparent">
+      <div class="mx-auto min-w-[980px] w-2/3 flex justify-between pt-10">
+        <div
+          class="justify-start h-32 rounded-lg col-span-2 pl-14 text-4xl font-blod text-white flex items-center"
+        >
+          您的档案
         </div>
-        <div class="h-32 rounded-lg pt-10">
+        <div class="justify-end h-32 pr-14 rounded-lg flex items-center">
           <router-link
             v-if="isCurrentUser"
-            class="inline-block rounded border border-current px-10 py-3 text-xl font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-indigo-500"
+            class="inline-block rounded border border-current px-10 py-3 text-2xl font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-indigo-500"
             :to="{ name: 'userprofileupload' }"
           >
             编辑
@@ -19,28 +19,30 @@
         </div>
       </div>
 
-      <div class="mx-auto pt-10 px-5 md:px-20 rounded-lg bg-white w-full md:w-2/3 h-4/5 shadow-xl">
+      <div class="mx-auto min-w-[980px] pt-10 px-20 rounded-lg bg-white w-2/3 h-4/5 shadow-xl">
         <h1 class="text-2xl font-bold border-b-2 border-gray-30 inline-block pt-10">基础信息</h1>
         <!-- Resume content -->
         <div class="grid grid-cols-3 gap-2">
           <div>
             <p class="infotemplate pt-5">真实姓名</p>
-            <p class="">{{ user_profile_info.user_info.realname }}</p>
+            <p class="mt-2">{{ user_profile_info.user_info.realname }}</p>
             <p class="infotemplate pt-5">入学年份</p>
-            <p class="">{{ user_profile_info.user_info.enrolment_year }}</p>
+            <p class="mt-2">{{ user_profile_info.user_info.enrollment_year }} 级</p>
             <p class="infotemplate pt-5">所属学院</p>
-            <p class="">{{ user_profile_info.user_info.college }}</p>
+            <p class="mt-2">{{ user_profile_info.user_info.college }}</p>
             <p class="infotemplate pt-5">手机号码</p>
-            <p class="">{{ user_profile_info.user_info.mobile_phone }}</p>
+            <p class="mt-2">{{ user_profile_info.user_info.mobile_phone }}</p>
           </div>
 
           <div class="">
             <p class="infotemplate pt-5">性别</p>
-            <p class="">{{ user_profile_info.user_info.gender }}</p>
+            <p v-if="user_profile_info.user_info.gender == 1" class="mt-2">男</p>
+            <p v-else-if="user_profile_info.user_info.gender == 2" class="mt-2">女</p>
+            <p v-else class="mt-2">未知</p>
             <p class="infotemplate pt-5">QQ号码</p>
-            <p class="">{{ user_profile_info.qq_number }}</p>
+            <p class="mt-2">{{ user_profile_info.qq_number }}</p>
             <p class="infotemplate pt-5">微信号码</p>
-            <p class="">{{ user_profile_info.wechat_number }}</p>
+            <p class="mt-2">{{ user_profile_info.wechat_number }}</p>
           </div>
 
           <div class="text-center">
@@ -49,8 +51,13 @@
               <input type="file" id="avatarUpload" @change="avatarUpload" class="sr-only" />
               <label for="avatarUpload" class="cursor-pointer">
                 <img
-                  alt="Developer"
+                  v-if="user_profile_info.user_info.avatar_url != ''"
                   :src="user_profile_info.user_info.avatar_url"
+                  class="rounded-full min-w-[180px] w-[180px] object-cover transition-opacity"
+                />
+                <img
+                  v-else
+                  src="../assets/img/defaultAvatar.svg"
                   class="rounded-full min-w-[180px] w-[180px] object-cover transition-opacity"
                 />
                 <div
@@ -78,9 +85,14 @@
         </div>
         <div class="pb-20">
           <h1 class="text-2xl font-bold border-b-2 border-gray-30 inline-block pt-10">荣誉列表</h1>
-          <ul class="pt-5">
-            <li v-for="(honor, index) in user_profile_info.honors" :key="index">{{ honor }}</li>
-          </ul>
+          <li
+            v-for="(honor, index) in user_profile_info.honors"
+            :key="index"
+            class="mt-2 text-base leading-6 text-gray-800 flex items-center"
+          >
+            <img src="../assets/img/honor.svg" alt="goal" class="h-6 w-6 mr-3" />
+            <span class="pt-1">{{ honor }}</span>
+          </li>
         </div>
       </div>
     </div>
@@ -145,7 +157,9 @@ export default {
               !resp.user_profile_info.user_info.has_profile
             ) {
               // 如果是自己的 profile 界面，并且没有创建 profile，则跳转到创建 profile 的界面
-              router.push(web_user_profile_upload_relative_url) // 将用户重定向到创建profile的页面
+              router.push({
+                name: 'userprofileupload'
+              })
             }
           } else {
             alert(resp.status_msg)
@@ -168,12 +182,16 @@ export default {
         return // 如果没有文件被选中，则不执行任何操作
       }
 
+      const formData = new FormData()
+      formData.append('file', file)
+
       // 使用 $.ajax 发送请求
       $.ajax({
         url: `${server_url}${utils_upload_img_url}`, // 替换为你的服务器端点
         type: 'POST',
-        data: {
-          file: file
+        data: formData,
+        headers: {
+          Authorization: `Bearer ${store.state.user.token}`
         },
         processData: false, // 告诉jQuery不要处理发送的数据
         contentType: false, // 告诉jQuery不要设置内容类型
