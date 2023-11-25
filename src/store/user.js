@@ -29,9 +29,10 @@ const ModuleUser = {
     },
 
     // 更新本地 token
-    // updateToken(state, token) {
-    //   state.token = token
-    // },
+    update_token(state, token) {
+      localStorage.setItem('token', token)
+      state.token = token
+    },
     logout(state) {
       localStorage.removeItem('token')
       localStorage.removeItem('user_info')
@@ -46,14 +47,18 @@ const ModuleUser = {
       $.ajax({
         url: `${server_url}${user_login_url}`,
         type: 'POST',
-        data: {
+        data: JSON.stringify({
           username: data.username,
           password: data.password
+        }),
+        headers: {
+          'Content-Type': 'application/json'
         },
-
         success(resp) {
           const { token } = resp
           const token_obj = jwt_decode(token)
+          // 更新本地 token
+          context.commit('update_token', token)
           // 登录成功后获取用户信息
           context.dispatch('get_user_info', {
             user_id: token_obj.user_id,
@@ -95,21 +100,24 @@ const ModuleUser = {
       $.ajax({
         url: `${server_url}${user_register_url}`,
         type: 'POST',
-        data: {
+        data: JSON.stringify({
           username: data.username,
           password: data.password
+        }),
+        headers: {
+          'Content-Type': 'application/json'
         },
         success(resp) {
           if (resp.status_code != 0) {
             let msg = '注册失败，出现未知错误'
-            if (resp.status_code == 10005) {
+            if (resp.status_code == 10007) {
               msg = '用户名已存在'
             }
             data.error(msg)
           } else {
             context.dispatch('login', {
-              username: data.username.value,
-              password: data.password.value,
+              username: data.username,
+              password: data.password,
               success() {
                 router.push({ name: 'home' })
               }
@@ -125,10 +133,11 @@ const ModuleUser = {
       $.ajax({
         url: `${server_url}${user_info_upload_url}`,
         type: 'POST',
-        data: {
+        data: JSON.stringify({
           user_info: data.user_info
-        },
+        }),
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${data.token}`
         },
         success(resp) {

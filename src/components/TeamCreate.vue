@@ -164,15 +164,16 @@ const submitTeamCreate = () => {
   $.ajax({
     url: `${server_url}${team_create_url}`,
     type: 'POST',
-    data: {
+    data: JSON.stringify({
       user_id: store.state.user.user_id,
       team_id: props.initial_team_info.team_id,
       contest_id: props.initial_team_info.contest_id,
       title: team_title.value,
       goal: team_goal.value,
       description: description.value
-    },
+    }),
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${store.state.user.token}`
     },
     success: function (resp) {

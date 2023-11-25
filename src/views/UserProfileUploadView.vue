@@ -181,12 +181,13 @@ export default {
       $.ajax({
         url: `${server_url}${user_profile_upload_url}`,
         type: 'POST',
-        data: {
+        data: JSON.stringify({
           user_id: store.state.user.user_info.user_id,
           user_profile_info: user_profile_info
-        },
+        }),
         headers: {
-          Authorization: `Bearer ${store.state.user.token}`
+          Authorization: `Bearer ${store.state.user.token}`,
+          'Content-Type': 'application/json'
         },
         success: function (resp) {
           // 处理成功的响应

@@ -7,6 +7,9 @@ import { watch, ref } from 'vue'
 import { server_url, utils_upload_img_url } from '../constants/constants'
 // 引入组件
 import Vue3Tinymce from '@jsdawn/vue3-tinymce'
+import { useStore } from 'vuex'
+
+const store = useStore()
 
 const props = defineProps({
   description: {
@@ -35,7 +38,7 @@ const setting = {
     return resp.image_url
   },
   custom_images_upload_header: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTk0NTc0NTUsIm9yaWdfaWF0IjoxNjk4ODUyNjU1LCJ1c2VyX2lkIjoxfQ.fuOSBYmoTKLNyI2SIeldBQxDzv3jVzhzJ9_Qg0Zy0yw`
+    Authorization: `Bearer ${store.state.user.token}`
   },
   // custom_images_upload_param: { id: 'xxxx01', age: 18 },
 

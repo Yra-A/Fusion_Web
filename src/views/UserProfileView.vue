@@ -196,11 +196,12 @@ export default {
       $.ajax({
         url: `${server_url}${user_profile_upload_url}`,
         type: 'POST',
-        data: {
+        data: JSON.stringify({
           user_id: store.state.user.user_info.user_id,
           user_profile_info: new_user_profile_info
-        },
+        }),
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${store.state.user.token}`
         },
         success: function (resp) {
