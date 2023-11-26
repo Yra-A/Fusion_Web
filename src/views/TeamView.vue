@@ -251,7 +251,7 @@
             <img src="../assets/img/pink_icon.svg" class="h-4 w-4" />
             <span class="ml-2.5 mr-3">成员列表: </span>
             <span class="flex text-center font-semibold text-lg">
-              <div style="min-width: 20px">当前 5 人</div>
+              <div style="min-width: 20px">当前 {{ team.team_brief_info.cur_people_num }} 人</div>
             </span>
           </h2>
           <div class="hs-accordion-group" data-hs-accordion-always-open>
@@ -437,9 +437,9 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 const route = useRoute()
-const contest_id = route.params.contest_id
-const team_id = route.params.team_id
-const user_id = store.state.user.user_info.user_id
+const contest_id = parseInt(route.params.contest_id)
+const team_id = parseInt(route.params.team_id)
+const user_id = parseInt(store.state.user.user_info.user_id)
 
 let what_page = ref(0) // 0 - team info, 1 - modify team
 let role = ref(0) // 0 - 路人，1 - 组员， 2 - 队长
@@ -549,6 +549,10 @@ const get_team_application_list = () => {
     },
     success: function (resp) {
       if (resp.status_code === 0) {
+        if (resp.application_list == null) {
+          team_applications.value = []
+          return
+        }
         const fetched_applications = resp.application_list.map((item) => {
           return {
             team_id: item.team_id,
@@ -589,17 +593,17 @@ const submit_join_application = () => {
       Authorization: `Bearer ${store.state.user.token}`
     },
     data: JSON.stringify({
-      team_id: team_id,
+      team_id: parseInt(team_id),
       reason: join_reason.value,
       application_type: 1,
       created_time: Math.floor(Date.now() / 1000),
       member_info: {
-        user_id: user_id,
-        nickname: store.state.user.nickname,
-        college: store.state.user.college,
-        avatar_url: store.state.user.avatar_url,
-        gender: store.state.user.gender,
-        enrollment_year: store.state.user.enrollment_year
+        user_id: parseInt(user_id),
+        nickname: store.state.user.user_info.nickname,
+        college: store.state.user.user_info.college,
+        avatar_url: store.state.user.user_info.avatar_url,
+        gender: store.state.user.user_info.gender,
+        enrollment_year: store.state.user.user_info.enrollment_year
       }
     }),
     success: function (resp) {
@@ -625,8 +629,8 @@ const accept_application = (application_id) => {
       Authorization: `Bearer ${store.state.user.token}`
     },
     data: JSON.stringify({
-      user_id: user_id,
-      application_id: application_id,
+      user_id: parseInt(user_id),
+      application_id: parseInt(application_id),
       action_type: 1
     }),
     success: function (resp) {
@@ -652,8 +656,8 @@ const reject_application = (application_id) => {
       Authorization: `Bearer ${store.state.user.token}`
     },
     data: JSON.stringify({
-      user_id: user_id,
-      application_id: application_id,
+      user_id: parseInt(user_id),
+      application_id: parseInt(application_id),
       action_type: 2
     }),
     success: function (resp) {

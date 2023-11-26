@@ -382,6 +382,22 @@ const cur_team_info = reactive({
   description: ''
 })
 
+const fieldsHashTable = {
+  engineering: '理工科类',
+  business: '商业与创新创业类',
+  arts: '艺术类',
+  social: '社会类',
+  literature: '文学类',
+  language: '语言类',
+  sports: '体育类',
+  others: '其他类'
+}
+
+const competitionFormatsHashTable = {
+  individual: '个人竞赛',
+  team: '团队竞赛'
+}
+
 const formattedCreatedTime = (created_time) => {
   if (!created_time) {
     return '' // 或其他默认值
@@ -398,12 +414,26 @@ const formattedCreatedTime = (created_time) => {
 }
 
 const getContestInfo = () => {
+  let user_id = 0
+  if (store.state.user.is_login) {
+    // user_id 不为 0，表示用户为登录状态
+    user_id = store.state.user.user_info.user_id
+  }
   $.ajax({
     url: `${server_url}${contest_info_url}/${contest_id}`,
     type: 'GET',
+    data: {
+      user_id: user_id
+    },
     success: function (resp) {
       console.log(resp)
-      Object.assign(contest, resp.contest)
+      if (resp.status_code == 0) {
+        resp.contest.field = fieldsHashTable[resp.contest.field]
+        resp.contest.format = competitionFormatsHashTable[resp.contest.format]
+        Object.assign(contest, resp.contest)
+      } else {
+        alert(resp.status_msg)
+      }
     }
   })
 }

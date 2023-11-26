@@ -340,6 +340,21 @@ export default {
       created_time: 0,
       is_favorite: false
     })
+    const fieldsHashTable = {
+      engineering: '理工科类',
+      business: '商业与创新创业类',
+      arts: '艺术类',
+      social: '社会类',
+      literature: '文学类',
+      language: '语言类',
+      sports: '体育类',
+      others: '其他类'
+    }
+
+    const competitionFormatsHashTable = {
+      individual: '个人竞赛',
+      team: '团队竞赛'
+    }
     const currentPage = ref(1)
     const totalPage = ref(0)
     const limit = 10 // 每页显示的数量
@@ -376,7 +391,13 @@ export default {
         },
         success: function (resp) {
           console.log(resp)
-          Object.assign(contest, resp.contest)
+          if (resp.status_code == 0) {
+            resp.contest.field = fieldsHashTable[resp.contest.field]
+            resp.contest.format = competitionFormatsHashTable[resp.contest.format]
+            Object.assign(contest, resp.contest)
+          } else {
+            alert(resp.status_msg)
+          }
         }
       })
     }

@@ -180,6 +180,10 @@ const submitTeamCreate = () => {
     success: function (resp) {
       console.log(resp)
       if (resp.status_code == 0) {
+        if (router.currentRoute.value.name === 'team') {
+          location.reload()
+          return
+        }
         router.push({
           name: 'team',
           params: { team_id: resp.team_id }
