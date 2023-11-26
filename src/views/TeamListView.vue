@@ -369,7 +369,7 @@ const contest = reactive({
   is_favorite: false
 })
 const currentPage = ref(1)
-const totalPage = ref(0)
+const totalPage = ref(1)
 const limit = 10 // 每页显示的数量
 
 const teams = ref([])
