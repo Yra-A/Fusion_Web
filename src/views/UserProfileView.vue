@@ -101,6 +101,7 @@
 </template>
 <script>
 import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { reactive, computed } from 'vue'
 import $ from 'jquery'
@@ -120,6 +121,7 @@ export default {
   },
   setup() {
     const router = useRouter()
+    const route = useRoute()
     const store = useStore()
 
     const user_profile_info = reactive({
@@ -140,7 +142,7 @@ export default {
       }
     })
 
-    const user_profile_url = get_user_profile_url(store.state.user.user_info.user_id)
+    const user_profile_url = get_user_profile_url(route.params.user_id)
 
     const getUserProfileInfo = () => {
       $.ajax({

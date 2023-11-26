@@ -199,7 +199,6 @@ import {
 } from '../constants/constants.js'
 import $ from 'jquery'
 import { useStore } from 'vuex'
-
 export default {
   components: {
     NavBar,
@@ -278,6 +277,22 @@ export default {
     const store = useStore()
     const is_favor = ref(false)
 
+    const fieldsHashTable = {
+      engineering: '理工科类',
+      business: '商业与创新创业类',
+      arts: '艺术类',
+      social: '社会类',
+      literature: '文学类',
+      language: '语言类',
+      sports: '体育类',
+      others: '其他类'
+    }
+
+    const competitionFormatsHashTable = {
+      individual: '个人竞赛',
+      team: '团队竞赛'
+    }
+
     // 计算属性，用于判断是否有至少一个复选框被选中
     const anyCheckboxSelected = computed(() => {
       return (
@@ -310,8 +325,9 @@ export default {
           formats: selected_formats,
           limit: limit,
           offset: (currentPage.value - 1) * limit,
-          keyword: ''
+          keyword: keyword.value
         },
+        traditional: true,
         success: function (resp) {
           if (resp.status_code === 0) {
             totalPage.value = Math.ceil(resp.total / limit)
@@ -319,8 +335,8 @@ export default {
               return {
                 contest_id: item.contest_brief_info.contest_id,
                 title: item.contest_brief_info.title,
-                field: item.contest_brief_info.field,
-                format: item.contest_brief_info.format,
+                field: fieldsHashTable[item.contest_brief_info.field],
+                format: competitionFormatsHashTable[item.contest_brief_info.format],
                 created_time: item.contest_brief_info.created_time,
                 description: item.contest_brief_info.description
               }
@@ -377,8 +393,8 @@ export default {
               return {
                 contest_id: item.contest_brief_info.contest_id,
                 title: item.contest_brief_info.title,
-                field: item.contest_brief_info.field,
-                format: item.contest_brief_info.format,
+                field: fieldsHashTable[item.contest_brief_info.field],
+                format: competitionFormatsHashTable[item.contest_brief_info.format],
                 created_time: item.contest_brief_info.created_time,
                 description: item.contest_brief_info.description
               }
