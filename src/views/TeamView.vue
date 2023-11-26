@@ -112,7 +112,14 @@
                           target="_blank"
                         >
                           <img
+                            v-if="application.member_info.avatar_url != ''"
                             :src="application.member_info.avatar_url"
+                            class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                            @click.stop
+                          />
+                          <img
+                            v-else
+                            src="../assets/img/defaultAvatar.svg"
                             class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
                             @click.stop
                           />
@@ -203,9 +210,11 @@
         <div class="flex flex-col mb-3 pb-1">
           <div class="pb-3 mb-1 flex">
             <img
+              v-if="team.team_brief_info.leader_info.avatar_url != ''"
               :src="team.team_brief_info.leader_info.avatar_url"
               class="rounded-full h-12 w-12 mt-2"
             />
+            <img v-else src="../assets/img/defaultAvatar.svg" class="rounded-full h-12 w-12 mt-2" />
             <div class="ml-5 flex flex-col">
               <div>
                 <span class="font-semibold text-xl align-middle">{{
@@ -264,14 +273,28 @@
                     target="_blank"
                   >
                     <img
+                      v-if="member.avatar_url != ''"
                       :src="member.avatar_url"
+                      class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                      @click.stop
+                    />
+                    <img
+                      v-else
+                      src="../assets/img/defaultAvatar.svg"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
                       @click.stop
                     />
                   </router-link>
                   <div v-else>
                     <img
+                      v-if="member.avatar_url != ''"
                       :src="member.avatar_url"
+                      class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
+                      @click.stop
+                    />
+                    <img
+                      v-else
+                      src="../assets/img/defaultAvatar.svg"
                       class="rounded-full h-10 w-10 mt-1 hover:scale-125 hover:ring-4 transform transition duration-100"
                       @click.stop
                     />
@@ -425,14 +448,13 @@ const team = reactive({
   description: '',
   members: [
     {
-      user_id: 1,
-      nickname: 'Yra',
-      college: '信息机电与工程学院',
-      avatar_url:
-        'https://yra-typora-image.oss-cn-hangzhou.aliyuncs.com/image-20231014112932422.png',
-      gender: 1,
+      user_id: 0,
+      nickname: '',
+      college: '',
+      avatar_url: '',
+      gender: 0,
       enrollment_year: 2021,
-      honors: ['全国大学生睡觉竞赛冠军', '国际大学生摆烂竞赛冠军', '专业打游戏 8 级', '啥都不会']
+      honors: []
     }
   ],
   team_brief_info: {

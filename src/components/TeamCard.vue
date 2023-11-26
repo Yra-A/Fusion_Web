@@ -15,7 +15,12 @@
     <!-- Creator -->
     <div class="flex items-center text-base text-gray-500 mb-3">
       <span class="inline-block mr-2">
-        <img :src="team_brief_info.leader_info.avatar_url" class="h-6 w-6 rounded-full" />
+        <img
+          v-if="team_brief_info.leader_info.avatar_url != ''"
+          :src="team_brief_info.leader_info.avatar_url"
+          class="h-6 w-6 rounded-full"
+        />
+        <img v-else src="../assets/img/defaultAvatar.svg" class="h-6 w-6 rounded-full" />
       </span>
       <span class="inline-block mr-2">{{ team_brief_info.leader_info.nickname }}</span>
       <div class="inline-block mx-2 h-4 bg-gray-300 w-px"></div>

@@ -1,7 +1,7 @@
 /* 后端接口 */
 // const server_url = 'https://mock.apifox.cn/m1/3429271-0-default'
-const server_url = 'http://101.35.229.143:8888/fusion'
-// const server_url = 'http://localhost:8888/fusion'
+// const server_url = 'http://101.35.229.143:8888/fusion'
+const server_url = 'http://localhost:8888/fusion'
 const show_url = 'http://101.35.229.143:5173'
 
 const user_login_url = '/user/login'

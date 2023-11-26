@@ -106,6 +106,7 @@ import { ref } from 'vue'
 import $ from 'jquery'
 import { server_url, team_create_url } from '../constants/constants'
 import { useStore } from 'vuex'
+import router from '../router'
 
 const store = useStore()
 
@@ -165,9 +166,9 @@ const submitTeamCreate = () => {
     url: `${server_url}${team_create_url}`,
     type: 'POST',
     data: JSON.stringify({
-      user_id: store.state.user.user_id,
+      user_id: store.state.user.user_info.user_id,
       team_id: props.initial_team_info.team_id,
-      contest_id: props.initial_team_info.contest_id,
+      contest_id: parseInt(props.initial_team_info.contest_id),
       title: team_title.value,
       goal: team_goal.value,
       description: description.value
@@ -178,9 +179,17 @@ const submitTeamCreate = () => {
     },
     success: function (resp) {
       console.log(resp)
+      if (resp.status_code == 0) {
+        router.push({
+          name: 'team',
+          params: { team_id: resp.team_id }
+        })
+      } else {
+        alert(resp.status_msg)
+      }
     },
     error: function (error) {
-      console.error('Error fetching teams:', error)
+      alert(error)
     }
   })
 }
