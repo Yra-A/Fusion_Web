@@ -345,16 +345,7 @@ export default {
     const limit = 10 // 每页显示的数量
     const store = useStore()
 
-    const articles = ref([
-      {
-        article_id: 0,
-        title: 'string',
-        author_id: 0,
-        author: 'string',
-        created_time: 0,
-        link: ''
-      }
-    ])
+    const articles = ref([])
 
     const formattedCreatedTime = (created_time) => {
       if (!created_time) {

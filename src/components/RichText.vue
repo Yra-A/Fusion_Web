@@ -31,8 +31,8 @@ const setting = {
   nonbreaking_force_tab: true,
   // 自定义 图片上传模式
   custom_images_upload: true,
-  // images_upload_url: `${server_url}${utils_upload_img_url}`,
-  images_upload_url: `http://localhost:8888${utils_upload_img_url}`,
+  images_upload_url: `${server_url}${utils_upload_img_url}`,
+  // images_upload_url: `http://localhost:8888${utils_upload_img_url}`,
 
   custom_images_upload_callback: (resp) => {
     return resp.image_url

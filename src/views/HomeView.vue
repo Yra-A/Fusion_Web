@@ -271,16 +271,7 @@ export default {
         styles: 'checkbox checkbox-warning checkbox-sm'
       }
     ])
-    const contests = ref([
-      {
-        contest_id: 0,
-        title: '',
-        field: '',
-        format: '',
-        created_time: 0,
-        description: ''
-      }
-    ])
+    const contests = ref([])
     const currentPage = ref(1)
     const totalPage = ref(0)
     const limit = 10 // 每页显示的数量

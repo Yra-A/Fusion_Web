@@ -372,24 +372,7 @@ const currentPage = ref(1)
 const totalPage = ref(0)
 const limit = 10 // 每页显示的数量
 
-const teams = ref([
-  {
-    team_id: 0,
-    title: '',
-    goal: '',
-    cur_people_num: 0,
-    created_time: 0,
-    leader_info: {
-      user_id: 0,
-      nickname: '',
-      college: '',
-      avatar_url: '',
-      gender: 0,
-      enrollment_year: 0,
-      honors: []
-    }
-  }
-])
+const teams = ref([])
 
 const cur_team_info = reactive({
   team_id: 0,
