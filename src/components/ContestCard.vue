@@ -13,7 +13,7 @@
     </div>
     <!-- Description -->
     <p class="text-sm text-gray-400">
-      {{ description }}
+      {{ limitedDescription }}
     </p>
   </div>
 </template>
@@ -50,6 +50,13 @@ export default {
       const day = date.getDate()
 
       return `${year} 年 ${month} 月 ${day} 日`
+    },
+    limitedDescription() {
+      if (this.description.length <= 90) {
+        return this.description
+      } else {
+        return this.description.slice(0, 90) + '...'
+      }
     }
   }
 }
