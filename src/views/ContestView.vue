@@ -356,7 +356,7 @@ export default {
       team: '团队竞赛'
     }
     const currentPage = ref(1)
-    const totalPage = ref(0)
+    const totalPage = ref(1)
     const limit = 10 // 每页显示的数量
     const store = useStore()
 
@@ -449,8 +449,8 @@ export default {
     }
 
     const change2ArticleList = () => {
-      currentPage.value = 0
-      totalPage.value = 0
+      currentPage.value = 1
+      totalPage.value = 1
     }
 
     watch(currentPage, getArticleList)

@@ -272,7 +272,7 @@ export default {
     ])
     const contests = ref([])
     const currentPage = ref(1)
-    const totalPage = ref(0)
+    const totalPage = ref(1)
     const limit = 10 // 每页显示的数量
     const store = useStore()
     const is_favor = ref(false)
