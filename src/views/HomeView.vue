@@ -170,7 +170,6 @@
             :to="{ name: 'contest', params: { contest_id: contest.contest_id } }"
             v-for="contest in contests"
             :key="'link-' + contest.contest_id"
-            target="_blank"
             class="block transition-transform transform active:scale-95"
           >
             <ContestCard
@@ -331,6 +330,9 @@ export default {
         success: function (resp) {
           if (resp.status_code === 0) {
             totalPage.value = Math.ceil(resp.total / limit)
+            if (totalPage.value == 0) {
+              totalPage.value = 1
+            }
             const fetched_contests = resp.contest_list.map((item) => {
               return {
                 contest_id: item.contest_brief_info.contest_id,

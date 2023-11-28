@@ -193,7 +193,23 @@ const submitTeamCreate = () => {
       }
     },
     error: function (error) {
-      alert(error)
+      // 尝试解析 JSON 格式的错误响应
+      try {
+        var resp = JSON.parse(error.responseText)
+
+        // 访问 status_msg 属性
+        if (
+          resp.status_msg ==
+          'remote or network error[remote]: biz error: Error 3988 (HY000): Conversion from collation utf8mb3_general_ci into utf8mb4_0900_ai_ci impossible for parameter'
+        ) {
+          alert('您的描述中可能有暂不支持的字符')
+        } else if (resp.status_msg !== undefined) {
+          console.log('Status Message:', resp.status_msg)
+          alert(resp.status_msg)
+        }
+      } catch (parseError) {
+        console.error('Error parsing JSON:', parseError)
+      }
     }
   })
 }
