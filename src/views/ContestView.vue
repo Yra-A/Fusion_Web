@@ -29,11 +29,11 @@
               class="flex items-center gap-1.5"
             >
               <img src="../assets/img/not_favor.svg" class="h-6 w-6" />
-              <span class="text-base w-12">收藏</span>
+              <span class="text-base w-14">收藏</span>
             </div>
             <div v-else class="flex items-center gap-1.5">
               <img src="../assets/img/is_favor.svg" class="h-6 w-6" />
-              <span class="text-base w-12">已收藏</span>
+              <span class="text-base w-14">已收藏</span>
             </div>
           </div>
         </div>
@@ -408,13 +408,16 @@ export default {
         url: `${server_url}${article_list_url}`,
         type: 'GET',
         data: {
-          contest_id: contest.contest_id,
+          contest_id: contest_id,
           limit: limit,
           offset: (currentPage.value - 1) * limit
         },
         success: function (resp) {
           if (resp.status_code === 0) {
             totalPage.value = Math.ceil(resp.total / limit)
+            if (totalPage.value == 0) {
+              totalPage.value = 1
+            }
             const fetched_articles = resp.article_list.map((item) => {
               return {
                 article_id: item.article_brief_info.article_id,
